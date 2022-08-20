@@ -1,0 +1,48 @@
+# MediaWiki with MariaDB
+#
+# Access via "http://localhost:8080"
+#   (or "http://$(docker-machine ip):8080" if using docker-machine)
+version: '3'
+services:
+  mediawiki:
+    build: mediawiki-build-1.35
+    restart: always
+    ports:
+      - 8100:80
+    links:
+      - percona
+      - memcached
+    volumes:
+      - ./images:/var/www/html/images
+      - ./backups:/var/www/html/backups
+      - ./LocalSettings.php:/var/www/html/LocalSettings.php
+
+#  postgres:
+#    image: postgres:10.22-bullseye
+#    restart: always
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: FaNeZEeaIJdPVbNV7jnVcFrsxJKDXNPmRditRId86QI
+#      POSTGRES_DB: mediawiki
+#    volumes:
+#      - ./postgres-data:/var/lib/postgresql
+
+  percona:
+    image: percona@sha256:caab4e854bd75040d07802bf1862bfef1d2b4db0acbc9c4aaf5c21c698fdd393  # percona:5.7
+    # image: percona@sha256:4b74e8a2429412115dba753f5fe53f79aa2d3ddf2e433496a91e4ac27efbdc5b  # percona:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: jfQjSecSUHmiqq9b6LcvKy03rqezIpn06ioPLJhEaD8
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: mediawiki
+      MYSQL_PASSWORD: FaNeZEeaIJdPVbNV7jnVcFrsxJKDXNPmRditRId86QI
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - 33336:3306
+  memcached:
+    image: memcached:latest
+    restart: always
+    command: ["-m", "512"]
+
