@@ -166,4 +166,10 @@ RUN wget -O extensions/RatePage.tar.gz https://gitlab.com/nonsensopedia/extensio
     tar -xvf extensions/RatePage.tar.gz --directory extensions && \
     mv extensions/ratepage-REL1_35 extensions/RatePage
 
+# Installing OAuth2 Client extension (https://www.mediawiki.org/wiki/Extension:OAuth2_Client )
+# RUN cd extensions && git clone https://github.com/Schine/MW-OAuth2Client.git && cd MW-OAuth2Client && git submodule update --init && cd vendors/oauth2-client && composer install
+COPY MW-OAuth2Client extensions/MW-OAuth2Client
+RUN cd extensions/MW-OAuth2Client/vendors/oauth2-client && composer install
+
+
 CMD ["apache2-foreground"]
