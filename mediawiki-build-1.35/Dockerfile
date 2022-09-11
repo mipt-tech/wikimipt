@@ -171,5 +171,8 @@ RUN wget -O extensions/RatePage.tar.gz https://gitlab.com/nonsensopedia/extensio
 COPY MW-OAuth2Client extensions/MW-OAuth2Client
 RUN cd extensions/MW-OAuth2Client/vendors/oauth2-client && composer install
 
+# Enable mod_remoteip apache2 module to fetch real client IP from X-Forwarded-For header
+RUN a2enmod remoteip
+COPY apache2-remoteip.conf /etc/apache2/conf-enabled/remoteip.conf
 
 CMD ["apache2-foreground"]

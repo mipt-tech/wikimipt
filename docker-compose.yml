@@ -1,7 +1,6 @@
-# MediaWiki with MariaDB
-#
-# Access via "http://localhost:8080"
-#   (or "http://$(docker-machine ip):8080" if using docker-machine)
+# Before start - create network with:
+# docker network create -d bridge --subnet 172.48.0.0/24 --gateway 172.48.0.1 mediawiki-net
+
 version: '3'
 services:
   mediawiki:
@@ -13,19 +12,11 @@ services:
       - percona
       - memcached
     volumes:
-      - ./images:/var/www/html/images
-      - ./backups:/var/www/html/backups
-      - ./LocalSettings.php:/var/www/html/LocalSettings.php
-
-#  postgres:
-#    image: postgres:10.22-bullseye
-#    restart: always
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: FaNeZEeaIJdPVbNV7jnVcFrsxJKDXNPmRditRId86QI
-#      POSTGRES_DB: mediawiki
-#    volumes:
-#      - ./postgres-data:/var/lib/postgresql
+      - ./mediawiki-data/images:/var/www/html/images
+      - ./mediawiki-data/backups:/var/www/html/backups
+      - ./mediawiki-data/LocalSettings.php:/var/www/html/LocalSettings.php
+    networks:
+      - mediawiki-net
 
   percona:
     image: percona@sha256:caab4e854bd75040d07802bf1862bfef1d2b4db0acbc9c4aaf5c21c698fdd393  # percona:5.7
@@ -41,8 +32,16 @@ services:
       - ./mysql-data:/var/lib/mysql
     ports:
       - 33336:3306
+    networks:
+      - mediawiki-net
+
   memcached:
     image: memcached:latest
     restart: always
     command: ["-m", "512"]
+    networks:
+      - mediawiki-net
 
+networks:
+  mediawiki-net:
+    external: true
