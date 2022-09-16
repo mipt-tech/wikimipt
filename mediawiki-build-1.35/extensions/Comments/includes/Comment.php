@@ -955,7 +955,7 @@ class Comment extends ContextSource {
 			// Voting is possible only when database is unlocked
 			if ( !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly() ) {
 				if ($this->getUser()->isAnon()) {
-					$output .= "<i style=\"font-weight: 100;\" >(Авторизуйтесь, чтобы оценить)</i>";
+					$output .= "<i style=\"font-weight: 100;\" ><br />(Авторизуйтесь, чтобы оценить)</i>";
 					return $output;
 				}
 				// You can only vote for other people's comments, not for your own

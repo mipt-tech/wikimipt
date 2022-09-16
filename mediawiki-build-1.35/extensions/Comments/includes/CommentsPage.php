@@ -23,7 +23,7 @@ class CommentsPage extends ContextSource {
 	/**
 	 * @var int maximum amount of threads of comments shown per page before pagination is enabled;
 	 */
-	public $limit = 50;
+	public $limit = 150;
 
 	/**
 	 * @TODO document

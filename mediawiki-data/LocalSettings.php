@@ -197,7 +197,7 @@ wfLoadExtension( 'MW-OAuth2Client' );
 $wgOAuth2Client['client']['id']     = '4328b2a6cdf84bc886159c1234fed055'; // The client ID assigned to you by the provider
 $wgOAuth2Client['client']['secret'] = '71cffbcc5bbe49e79854c51ef3edb004'; // The client secret assigned to you by the provider
 
-$wgOAuth2Client['configuration']['authorize_endpoint']     = 'https://oauth.yandex.ru/authorize?force_confirm=yes'; // Authorization URL
+$wgOAuth2Client['configuration']['authorize_endpoint']     = 'https://oauth.yandex.ru/authorize'; // Authorization URL ?force_confirm=yes
 $wgOAuth2Client['configuration']['access_token_endpoint']  = 'https://oauth.yandex.ru/token'; // Token URL
 $wgOAuth2Client['configuration']['api_endpoint']           = 'https://login.yandex.ru/info?format=json'; // URL to fetch user JSON
 $wgOAuth2Client['configuration']['redirect_uri']           = 'https://polygon-wikimipt.endevir.ru/index.php/Special:OAuth2Client/callback'; // URL for OAuth2 server to redirect to
@@ -229,6 +229,7 @@ $wgCdnServersNoPurge[] = "171.0.0.0/8";
 # Comments settings
 $wgCommentsInRecentChanges = true;
 $wgCommentsSortDescending = true;
+$wgCommentsDefaultAvatar = "/images/default_avatar.gif";
 
 # Debug settings
 $wgDebugLogFile = "/var/log/mediawiki/mediawiki-debug.log";

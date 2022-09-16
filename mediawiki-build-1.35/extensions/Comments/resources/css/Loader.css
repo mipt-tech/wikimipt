@@ -1,3 +1,7 @@
+.comments-body {
+	float: left;
+}
+
 .comments-body .loader,
 .comments-body .loader:after {
 	border-radius: 50%;
