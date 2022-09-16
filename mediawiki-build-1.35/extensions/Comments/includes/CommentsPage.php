@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Logger\LoggerFactory;
 
 /**
  * Class for Comments methods that are not specific to one comments,
@@ -379,7 +380,7 @@ class CommentsPage extends ContextSource {
 		$counter = 1;
 		$bucket = [];
 
-		$commentThreads = $this->comments;
+		$commentThreads = $this->getCommentsThreads();
 
 		$comments = []; // convert 2nd threads array to a simple list of comments
 		foreach ( $commentThreads as $thread ) {
@@ -389,10 +390,10 @@ class CommentsPage extends ContextSource {
 
 		foreach ( $comments as $comment ) {
 			if (
-				!array_key_exists( $comment->user->getName(), $bucket ) &&
+				!array_key_exists( $comment->ip, $bucket ) &&
 				$comment->user->isAnon()
 			) {
-				$bucket[$comment->username] = $counter;
+				$bucket[$comment->ip] = $counter;
 				$counter++;
 			}
 		}
@@ -409,7 +410,6 @@ class CommentsPage extends ContextSource {
 		$output = '';
 
 		$commentThreads = $this->getCommentsThreads();
-		$this->comments = $commentThreads;
 
 		$currentPageNum = $this->getCurrentPagerPage();
 		$numPages = (int)ceil( $this->countTotal() / $this->limit );
@@ -433,6 +433,25 @@ class CommentsPage extends ContextSource {
 		}
 		$output .= $pager;
 
+		// $comments = []; // convert 2nd threads array to a simple list of comments
+		// foreach ( $commentThreads as $thread ) {
+		// 	$comments = array_merge( $comments, $thread );
+		// }
+		// $comments_list = [];
+		// foreach ( $comments as $comm ) {
+		// 	$comments_list[] = $comm->ip . "|||" . $comm->username . " ||| " . $comm->text . "<br />";
+		// }
+
+		// return implode(
+		// 	"\n", 
+		// 	array_map(
+		// 		 function ($k, $v) { 
+		// 			 return "$k is at $v"; 
+		// 		 }, 
+		// 		 array_keys($comments_list), 
+		// 		 array_values($comments_list)
+		// 	)
+		// );		
 		return $output;
 	}
 

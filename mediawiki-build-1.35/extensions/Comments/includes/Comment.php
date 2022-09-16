@@ -834,7 +834,7 @@ class Comment extends ContextSource {
 				->getOption( $user, 'gender', 'unknown' );
 		} else {
 			$anonMsg = $this->msg( 'comments-anon-name' )->inContentLanguage()->plain();
-			$commentPoster = $anonMsg . ' #' . $anonList[$this->user->getName()];
+			$commentPoster = $anonMsg . ' #' . $anonList[$this->ip];
 			$CommentReplyTo = $anonMsg;
 			$CommentReplyToGender = 'unknown'; // Undisclosed gender as anon user
 		}
@@ -954,6 +954,10 @@ class Comment extends ContextSource {
 
 			// Voting is possible only when database is unlocked
 			if ( !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly() ) {
+				if ($this->getUser()->isAnon()) {
+					$output .= "<i style=\"font-weight: 100;\" >(Авторизуйтесь, чтобы оценить)</i>";
+					return $output;
+				}
 				// You can only vote for other people's comments, not for your own
 				if ( $this->getUser()->getActorId() != $this->actorID ) {
 					$output .= "<span id=\"CommentBtn{$this->id}\">";

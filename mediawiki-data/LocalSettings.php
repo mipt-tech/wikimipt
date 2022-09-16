@@ -143,6 +143,8 @@ wfLoadExtension( 'Cite' );
 wfLoadExtension( 'CiteThisPage' );
 wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'Comments' );
+// require_once "$IP/extensions/Comments/CommentsOfTheDay.php";
+
 wfLoadExtension( 'ConfirmEdit' );
 wfLoadExtension( 'Gadgets' );
 wfLoadExtension( 'HeaderFooter' );
@@ -172,7 +174,6 @@ wfLoadExtension( 'TemplateData' );
 wfLoadExtension( 'TextExtracts' );
 wfLoadExtension( 'TitleBlacklist' );
 require_once "$IP/extensions/Validator/Validator.php";
-#require_once( "$IP/extensions/Ratings/Ratings.php" );
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'WikiEditor' );
 
@@ -225,3 +226,10 @@ $wgCdnServers[] = "172.24.0.1";
 $wgCdnServersNoPurge = [];
 $wgCdnServersNoPurge[] = "171.0.0.0/8";
 
+# Comments settings
+$wgCommentsInRecentChanges = true;
+$wgCommentsSortDescending = true;
+
+# Debug settings
+$wgDebugLogFile = "/var/log/mediawiki/mediawiki-debug.log";
+$wgDebugToolbar = false;

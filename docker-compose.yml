@@ -14,6 +14,7 @@ services:
     volumes:
       - ./mediawiki-data/images:/var/www/html/images
       - ./mediawiki-data/backups:/var/www/html/backups
+      - ./mediawiki-data/logs:/var/log/mediawiki
       - ./mediawiki-data/LocalSettings.php:/var/www/html/LocalSettings.php
     networks:
       - mediawiki-net
