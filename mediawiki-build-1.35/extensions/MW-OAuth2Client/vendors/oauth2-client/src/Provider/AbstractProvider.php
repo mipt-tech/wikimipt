@@ -344,6 +344,7 @@ abstract class AbstractProvider
         }
 
         $options += [
+            'force_confirm'   => 'yes',
             'response_type'   => 'code',
             'approval_prompt' => 'auto'
         ];
