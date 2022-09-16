@@ -135,14 +135,9 @@ RUN wget --no-check-certificate -O extensions/Ratings.tar.gz https://gerrit.wiki
     mkdir extensions/Ratings && \
     tar -xvf extensions/Ratings.tar.gz --directory extensions/Ratings
 
-# Installing MediaWiki/Comments
-RUN wget --no-check-certificate -O extensions/Comments.tar.gz https://extdist.wmflabs.org/dist/extensions/Comments-REL1_35-245b69c.tar.gz && \
-    mkdir extensions/Comments && \
-    tar -xvf extensions/Comments.tar.gz --directory extensions/
-
-# Installing MediaWiki/Math
-RUN wget --no-check-certificate -O extensions/Math.tar.gz https://extdist.wmflabs.org/dist/extensions/Math-REL1_35-b7a7939.tar.gz && \
-    mkdir extensions/Math && \
+# Installing Math extension
+COPY extensions/Math-REL1_35-4ec097f.tar.gz extensions/Math.tar.gz
+RUN mkdir extensions/Math && \
     tar -xvf extensions/Math.tar.gz --directory extensions
 
 # Installing pluggable auth
@@ -168,8 +163,14 @@ RUN wget -O extensions/RatePage.tar.gz https://gitlab.com/nonsensopedia/extensio
 
 # Installing OAuth2 Client extension (https://www.mediawiki.org/wiki/Extension:OAuth2_Client )
 # RUN cd extensions && git clone https://github.com/Schine/MW-OAuth2Client.git && cd MW-OAuth2Client && git submodule update --init && cd vendors/oauth2-client && composer install
-COPY MW-OAuth2Client extensions/MW-OAuth2Client
+COPY extensions/MW-OAuth2Client extensions/MW-OAuth2Client
 RUN cd extensions/MW-OAuth2Client/vendors/oauth2-client && composer install
+
+# Installing Comments extension
+# COPY extensions/Comments-master.tar.gz extensions/Comments.tar.gz
+# RUN tar -xvf extensions/Comments.tar.gz --directory extensions && \
+	# mv extensions/mediawiki-extensions-Comments-master extensions/Comments
+COPY extensions/Comments extensions/Comments
 
 # Enable mod_remoteip apache2 module to fetch real client IP from X-Forwarded-For header
 RUN a2enmod remoteip
