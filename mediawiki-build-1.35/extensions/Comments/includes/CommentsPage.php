@@ -391,7 +391,7 @@ class CommentsPage extends ContextSource {
 		foreach ( $comments as $comment ) {
 			if (
 				!array_key_exists( $comment->ip, $bucket ) &&
-				$comment->user->isAnon()
+				$comment->isAnonComment()
 			) {
 				$bucket[$comment->ip] = $counter;
 				$counter++;

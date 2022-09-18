@@ -87,6 +87,7 @@ class Comment extends ContextSource {
 	 * @var int
 	 */
 	public $actorID = 0;
+	public $actorName = "";
 
 	/**
 	 * The amount of points the user has; fetched from the user_stats table if
@@ -128,6 +129,20 @@ class Comment extends ContextSource {
 		$this->setContext( $context );
 
 		$this->actorID = (int)$data['Comment_actor'];
+		$this->actorName = "";
+
+		if ( $this->actorID !== 0 ) {
+			$dbr = wfGetDB( DB_REPLICA );
+			$row = $dbr->selectRow(
+				'actor',
+				[ 'actor_name' ],
+				[ 'actor_id' => $this->actorID, ],
+				__METHOD__
+			);
+			if ( $row !== false ) {
+				$this->actorName = $row->actor_name;
+			}
+		}
 
 		$this->user = $commenter = User::newFromActorId( $data['Comment_actor'] );
 
@@ -254,6 +269,10 @@ class Comment extends ContextSource {
 	 */
 	public function isOwner( User $user ) {
 		return ( $this->actorID === $user->getActorId() );
+	}
+
+	function isAnonComment() {
+		return ( $this->actorID === 0 || $this->actorName === "");
 	}
 
 	/**
@@ -818,20 +837,27 @@ class Comment extends ContextSource {
 
 		$commentPosterLevel = '';
 
-		if ( !$this->user->isAnon() ) {
-			$commentPoster = '<a href="' . htmlspecialchars( $this->user->getUserPage()->getFullURL(), ENT_QUOTES ) .
-				'" rel="nofollow">' . htmlspecialchars( $this->user->getName(), ENT_QUOTES ) . '</a>';
+		if ( !$this->isAnonComment() ) {
+			if ( !$this->user->isAnon() ) {
+				$commentPoster = '<a href="' . htmlspecialchars( $this->user->getUserPage()->getFullURL(), ENT_QUOTES ) .
+					'" rel="nofollow">' . htmlspecialchars( $this->user->getRealName(), ENT_QUOTES ) . '</a>';
 
-			$CommentReplyTo = $this->user->getName();
+				$CommentReplyTo = $this->user->getRealName();
 
-			if ( $wgUserLevels && class_exists( 'UserLevel' ) ) {
-				$user_level = new UserLevel( $this->userPoints );
-				$commentPosterLevel = "{$user_level->getLevelName()}";
+				if ( $wgUserLevels && class_exists( 'UserLevel' ) ) {
+					$user_level = new UserLevel( $this->userPoints );
+					$commentPosterLevel = "{$user_level->getLevelName()}";
+				}
+	
+				$user = User::newFromId( $this->user->getId() );
+				$CommentReplyToGender = MediaWikiServices::getInstance()->getUserOptionsLookup()
+					->getOption( $user, 'gender', 'unknown' );
+			} else {
+				$name = str_replace("imported>", "", $this->actorName);
+				$commentPoster =  htmlspecialchars($name, ENT_QUOTES );
+				$CommentReplyTo = $commentPoster;
+				$CommentReplyToGender = 'unknown'; // Undisclosed gender as anon user
 			}
-
-			$user = User::newFromId( $this->user->getId() );
-			$CommentReplyToGender = MediaWikiServices::getInstance()->getUserOptionsLookup()
-				->getOption( $user, 'gender', 'unknown' );
 		} else {
 			$anonMsg = $this->msg( 'comments-anon-name' )->inContentLanguage()->plain();
 			$commentPoster = $anonMsg . ' #' . $anonList[$this->ip];

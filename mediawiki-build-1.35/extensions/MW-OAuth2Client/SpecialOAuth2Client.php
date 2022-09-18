@@ -181,6 +181,7 @@ class SpecialOAuth2Client extends SpecialPage {
 	        //$email = $response[8];
 		$username = JsonHelper::extractValue($response, $wgOAuth2Client['configuration']['username']);
 		$email =  JsonHelper::extractValue($response, $wgOAuth2Client['configuration']['email']);
+		$real_name =  JsonHelper::extractValue($response, $wgOAuth2Client['configuration']['real_name']);
 		if (strpos($email, "@phystech.edu") == false) {
 			return null;
 	        	//throw new MWException('WTF???' . get_debug_type($response) . '====' . implode("|||", $response) . " KEYS " . implode(', ', array_keys($response)) . "  VALUES  " . implode(', ', array_values($response)));
@@ -193,7 +194,7 @@ class SpecialOAuth2Client extends SpecialPage {
 			throw new MWException('Could not create user with username:' . $username);
 			die();
 		}
-		$user->setRealName($username);
+		$user->setRealName($real_name);
 		$user->setEmail($email);
 		$user->load();
 		if ( !( $user instanceof User && $user->getId() ) ) {

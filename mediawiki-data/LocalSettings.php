@@ -208,6 +208,7 @@ $wgOAuth2Client['configuration']['redirect_uri']           = 'https://polygon-wi
 
 $wgOAuth2Client['configuration']['username'] = 'login'; // JSON path to username
 $wgOAuth2Client['configuration']['email'] = 'default_email'; // JSON path to email
+$wgOAuth2Client['configuration']['real_name'] = 'real_name'; // JSON path to email
 
 $wgOAuth2Client['configuration']['scopes'] = ''; //'openid email profile'; //Permissions
 $wgOAuth2Client['configuration']['service_name'] = 'Яндекс'; // the name of your service
