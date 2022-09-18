@@ -1,0 +1,95 @@
+/*
+ * Citizen
+ *
+ * SkinStyles for Extension:TabberNeue
+ * Module: ext.tabberNeue
+ * Version: 1.3.1 (c045490)
+ *
+ * Date: 2022-04-19
+*/
+
+.tabber {
+	&__tab {
+		color: var( --color-base--subtle );
+		font-weight: 500;
+
+		&:visited {
+			color: var( --color-base--subtle );
+		}
+
+		&--active,
+		&--active:visited {
+			box-shadow: inset 0 -2px 0 0 var( --color-primary );
+			color: var( --color-primary );
+		}
+	}
+
+	&__header {
+		box-shadow: inset 0 -1px 0 0 var( --border-color-base--darker );
+
+		&__prev,
+		&__next {
+			&:after {
+				opacity: var( --opacity-icon-base );
+			}
+		}
+	}
+
+	&__transclusion {
+		&--loading {
+			.tabber__loading-indicator,
+			&:before,
+			&:after {
+				background-color: var( --color-primary );
+			}
+		}
+	}
+}
+
+@media ( hover: hover ) {
+	.tabber {
+		&__tab {
+			&:hover {
+				box-shadow: inset 0 -2px 0 0 var( --color-primary--hover );
+				color: var( --color-primary--hover );
+			}
+
+			&:active {
+				box-shadow: inset 0 -2px 0 0 var( --color-primary--active );
+				color: var( --color-primary--active );
+			}
+		}
+
+		&__header {
+			&__prev,
+			&__next {
+				&:hover {
+					background-color: var( --background-color-quiet--hover );
+
+					&:after {
+						opacity: var( --opacity-icon-base--hover );
+					}
+				}
+
+				&:active {
+					background-color: var( --background-color-quiet--active );
+
+					&:after {
+						opacity: var( --opacity-icon-base--active );
+					}
+				}
+			}
+		}
+	}
+}
+
+.skin-citizen-dark {
+	.tabber__header {
+		&__prev,
+		&__next {
+			&:after {
+				filter: invert( 1 );
+			}
+		}
+	}
+}

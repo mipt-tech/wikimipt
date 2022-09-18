@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joquliina",
+			"MITO",
+			"Moj",
+			"Nike"
+		]
+	},
+	"skinname-citizen": "Citizen",
+	"citizen-skin-desc": "Star Citizen Wikiä varten kehitetty responsiivinen ulkoasu",
+	"citizen.js": "/* Tämän sivun JavaScript-koodi liitetään Citizen-ulkoasuun */",
+	"citizen-actions-more-toggle": "Lisää toimintoja",
+	"citizen-sitestats-articles-label": "artikkelit",
+	"citizen-sitestats-images-label": "tiedostot",
+	"citizen-sitestats-users-label": "käyttäjät",
+	"citizen-sitestats-edits-label": "muokkaukset",
+	"citizen-action-addsection": "Lisää aihe",
+	"citizen-jumptotop": "Takaisin sivun alkuun",
+	"citizen-search-fulltext": "Etsi sivuja joissa on",
+	"citizen-tagline-ns-mediawiki": "MediaWiki-käyttöliittymäsivu",
+	"citizen-tagline-ns-template": "Mallinesivu",
+	"citizen-tagline-ns-help": "Ohjesivu",
+	"citizen-tagline-ns-category": "Luokkasivu",
+	"prefs-citizen-theme-label": "Teema",
+	"prefs-citizen-theme-option-light": "Vaalea",
+	"prefs-citizen-theme-option-dark": "Tumma"
+}

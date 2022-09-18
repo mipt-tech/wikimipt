@@ -94,7 +94,7 @@
 }
 
 .f-message {
-	width: 460px;
+	max-width: 460px;
 }
 
 .r-message {
@@ -114,7 +114,7 @@
 @media screen and ( max-width: 768px ) {
 	.f-message,
 	.r-message {
-		max-width: 100%;
+		max-width: calc(100% - 150px);
 	}
 
 	.c-score {

@@ -172,6 +172,16 @@ RUN cd extensions/MW-OAuth2Client/vendors/oauth2-client && composer install
 	# mv extensions/mediawiki-extensions-Comments-master extensions/Comments
 COPY extensions/Comments extensions/Comments
 
+# Installing MobileFrontend extension
+COPY extensions/MobileFrontend-REL1_35-a4f595e.tar.gz extensions/MobileFrontend.tar.gz
+RUN mkdir extensions/MobileFrontend && \
+    tar -xvf extensions/MobileFrontend.tar.gz --directory extensions
+
+# Installing Citizen skin
+COPY skins/citizen.zip skins/citizen.zip
+RUN unzip skins/citizen.zip -d skins && \
+	mv skins/mediawiki-skins-Citizen-main skins/Citizen
+
 # Enable mod_remoteip apache2 module to fetch real client IP from X-Forwarded-For header
 RUN a2enmod remoteip
 COPY apache2-remoteip.conf /etc/apache2/conf-enabled/remoteip.conf

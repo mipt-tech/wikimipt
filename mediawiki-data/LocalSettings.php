@@ -77,6 +77,7 @@ $wgMemCachedServers = [ 'memcached:11211' ];
 $wgEnableUploads = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
+$wgGenerateThumbnailOnParse = true;
 
 # InstantCommons allows wiki to use images from https://commons.wikimedia.org
 $wgUseInstantCommons = true;
@@ -125,12 +126,14 @@ $wgDiff3 = "/usr/bin/diff3";
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'vector', 'monobook':
 $wgDefaultSkin = "vector";
+$wgDefaultMobileSkin = "citizen";
 
 # Enabled skins.
 # The following skins were automatically enabled:
 wfLoadSkin( 'MonoBook' );
 wfLoadSkin( 'Timeless' );
 wfLoadSkin( 'Vector' );
+wfLoadSkin( 'Citizen' );
 
 
 # Enabled extensions. Most of the extensions are enabled by adding
@@ -176,6 +179,7 @@ wfLoadExtension( 'TitleBlacklist' );
 require_once "$IP/extensions/Validator/Validator.php";
 wfLoadExtension( 'VisualEditor' );
 wfLoadExtension( 'WikiEditor' );
+wfLoadExtension( 'MobileFrontend' );
 
 # End of automatically generated settings.
 # Add more configuration options below.

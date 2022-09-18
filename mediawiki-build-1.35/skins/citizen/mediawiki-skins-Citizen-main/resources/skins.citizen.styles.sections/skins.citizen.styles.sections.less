@@ -1,0 +1,108 @@
+@import '../variables.less';
+
+@indicator-size: 16px;
+
+.client-js {
+	.section {
+		&-heading {
+			cursor: pointer;
+			// So that double clicking won't highlight everything
+			user-select: none;
+
+			&--collapsed {
+				.section-indicator {
+					transform: rotate3d( 1, 0, 0, 180deg );
+				}
+
+				.mw-headline {
+					opacity: var( --opacity-icon-base );
+				}
+			}
+
+			.mw-headline {
+				transition: @transition-opacity;
+
+				&:hover {
+					opacity: var( --opacity-icon-base--hover );
+				}
+
+				&:active {
+					opacity: var( --opacity-icon-base--active );
+				}
+			}
+		}
+
+		&-indicator {
+			width: @indicator-size;
+			height: @indicator-size;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: @indicator-size;
+			cursor: pointer;
+			opacity: var( --opacity-icon-base );
+			transition: @transition-opacity, @transition-transform;
+
+			&:hover {
+				opacity: var( --opacity-icon-base--hover );
+			}
+
+			&:active {
+				opacity: var( --opacity-icon-base--active );
+			}
+		}
+
+		// Fix button alignment
+		&-heading,
+		&-subheading {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+
+			// Right-align the editsection
+			.mw-headline {
+				flex-grow: 1;
+			}
+		}
+
+		&-collapsible {
+			&--collapsed {
+				display: none;
+			}
+		}
+	}
+}
+
+.skin-citizen-dark {
+	.section-indicator {
+		filter: invert( 1 );
+	}
+}
+
+// Hide indicator when client is noscript
+.client-nojs {
+	.section {
+		&-indicator {
+			display: none;
+		}
+	}
+}
+
+// Fix hover state on touch devices
+@media ( hover: none ) {
+	.client-js .section {
+		&-heading .mw-headline,
+		&-indicator {
+			&:hover,
+			&:active {
+				opacity: 1;
+			}
+		}
+
+		&-heading--collapsed .mw-headline {
+			&:hover,
+			&:active {
+				opacity: var( --opacity-icon-base );
+			}
+		}
+	}
+}

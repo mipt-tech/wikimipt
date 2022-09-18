@@ -1,0 +1,219 @@
+/*
+ * Citizen
+ *
+ * SkinStyles for Extension:Popups
+ * Module: ext.popups.main
+ * Version: REL1_35 dccd607
+ *
+ * Date: 2021-09-02
+*/
+
+.mwe-popups {
+	// HACK: Needed to make rounded corner and placeholder bg work
+	// But you lose the pointer by doing it
+	overflow: hidden;
+	background-color: var( --color-surface-1 );
+	border-radius: var( --border-radius--medium );
+	box-shadow: var( --box-shadow-dialog );
+
+	&:hover {
+		background-color: var( --color-surface-2 );
+
+		.mwe-popups-extract {
+			&[ dir='ltr' ]:after {
+				/* @noflip */
+				background-image: linear-gradient( to right, transparent, var( --color-surface-2 ) 50% );
+			}
+
+			&[ dir='rtl' ]:after {
+				/* @noflip */
+				background-image: linear-gradient( to left, transparent, var( --color-surface-2 ) 50% );
+			}
+		}
+	}
+
+	&:active {
+		background-color: var( --color-surface-2--active );
+
+		.mwe-popups-extract {
+			&[ dir='ltr' ]:after {
+				/* @noflip */
+				background-image: linear-gradient( to right, transparent, var( --color-surface-2--active ) 50% );
+			}
+
+			&[ dir='rtl' ]:after {
+				/* @noflip */
+				background-image: linear-gradient( to left, transparent, var( --color-surface-2--active ) 50% );
+			}
+		}
+	}
+
+	.mwe-popups-container {
+		background-color: var( --color-surface-1 ); // MW 1.37+
+		color: var( --color-base );
+
+		// Neutral color so dark SVG is visible
+		svg {
+			background-color: #eaecf0;
+			border-radius: var( --border-radius--medium ) var( --border-radius--medium ) 0 0;
+		}
+	}
+
+	.mwe-popups-extract {
+		color: var( --color-base );
+
+		&[ dir='ltr' ]:after {
+			/* @noflip */
+			background-image: linear-gradient( to right, transparent, var( --color-surface-1 ) 50% );
+		}
+
+		&[ dir='rtl' ]:after {
+			/* @noflip */
+			background-image: linear-gradient( to left, transparent, var( --color-surface-1 ) 50% );
+		}
+	}
+
+	/* Triangles/Pointers */
+	&.mwe-popups-no-image-pointer {
+		&:after {
+			border-bottom-color: var( --color-surface-1 );
+		}
+
+		&:before {
+			border-bottom-color: var( --border-color-base );
+		}
+	}
+
+	&.mwe-popups-image-pointer {
+		&:before {
+			border-bottom-color: var( --border-color-base );
+		}
+
+		&:after {
+			border-bottom-color: var( --color-surface-1 );
+		}
+
+		&.flipped-x {
+			&:before {
+				border-bottom-color: var( --border-color-base );
+			}
+
+			&:after {
+				border-bottom-color: var( --color-surface-1 );
+			}
+		}
+	}
+
+	&.flipped-x.mwe-popups-is-tall {
+		&:before {
+			border-bottom-color: var( --border-color-base );
+		}
+	}
+
+	&.flipped-x-y {
+		&:before {
+			border-top-color: var( --border-color-base );
+		}
+
+		&:after {
+			border-top-color: var( --color-surface-1 );
+		}
+
+		&.mwe-popups-is-tall {
+			&:after {
+				border-top-color: var( --color-surface-1 );
+			}
+
+			&:before {
+				border-top-color: var( --border-color-base );
+			}
+		}
+	}
+
+	&.flipped-y {
+		&:after {
+			border-top-color: var( --color-surface-1 );
+		}
+
+		&:before {
+			border-top-color: var( --border-color-base );
+		}
+	}
+
+	/* referencePreview.less */
+	&.mwe-popups-type-reference {
+		.mwe-popups-extract {
+			.mwe-popups-fade {
+				background-image: linear-gradient( transparent, var( --color-surface-1 ) );
+			}
+
+			/* T266859 */
+			.mw-parser-output {
+				overflow-wrap: break-word;
+			}
+		}
+	}
+
+	// speed up fade animation 2x
+	&-fade {
+		&-in,
+		&-out {
+			&-up,
+			&-down {
+				animation-duration: 0.125s;
+			}
+		}
+	}
+
+	/* settingsDialogRenderer.less */
+	&-overlay {
+		background-color: var( --background-color-overlay );
+	}
+
+	/* settingsDialog.less */
+	&-settings {
+		border: 0;
+		background: var( --color-surface-1 );
+		border-radius: var( --border-radius--medium );
+		box-shadow: var( --box-shadow-dialog );
+
+		header {
+			padding: 0;
+			border-color: var( --border-color-base );
+
+			// For some reason it looks very weird
+			h1 {
+				padding-top: 0;
+				margin-bottom: unset;
+				font-size: 1rem;
+			}
+		}
+
+		main {
+			p {
+				color: var( --color-base--subtle );
+			}
+
+			form {
+				label {
+					> span {
+						color: var( --color-base--emphasized );
+						font-size: 1rem;
+						line-height: inherit;
+					}
+				}
+			}
+		}
+	}
+}
+
+.mw-ui-icon-popups-close:before {
+	opacity: var( --opacity-icon-base );
+}
+
+/* Dark styles */
+.skin-citizen-dark {
+	.mw-ui-icon-popups-close:before {
+		filter: invert( 1 );
+	}
+}

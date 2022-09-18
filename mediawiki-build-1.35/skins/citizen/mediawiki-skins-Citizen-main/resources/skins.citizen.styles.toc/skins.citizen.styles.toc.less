@@ -1,0 +1,269 @@
+@import '../variables.less';
+@import '../mixins.less';
+
+@media screen {
+	html {
+		// Make ToC width accessible as CSS var
+		--width-toc: @width-toc;
+	}
+
+	.toc {
+		position: fixed;
+		top: ~'calc( var( --height-header ) + 1.2rem )'; // align with .mw-body-header
+		left: var( --padding-page );
+		width: 100%;
+		max-width: ~'calc( var( --width-toc ) - var( --padding-page ) * 2 )';
+		color: var( --color-base--subtle );
+		font-size: 0.875rem;
+
+		&::-webkit-scrollbar {
+			width: 0; // Hide bar on toc
+		}
+
+		&title {
+			h2 {
+				margin: 0;
+				color: var( --color-base--subtle );
+				font-size: inherit;
+				font-weight: normal;
+				letter-spacing: 0.75px;
+			}
+		}
+
+		&toggle {
+			&span {
+				display: none;
+			}
+
+			&checkbox:checked ~ ul {
+				display: block !important; // Force display
+			}
+		}
+
+		li {
+			border-left: 2px solid var( --border-color-base--darker );
+
+			&.toclevel-2,
+			&.toclevel-3,
+			&.toclevel-4,
+			&.toclevel-5,
+			&.toclevel-6 {
+				margin-left: 0.75rem;
+			}
+		}
+
+		.toc__item--active {
+			border-color: var( --color-primary );
+			color: var( --color-primary );
+
+			> a,
+			> a:hover,
+			> a:active {
+				color: inherit;
+			}
+		}
+
+		a {
+			display: block;
+			padding: 0.25rem 0 0.25rem 0.75rem;
+			color: var( --color-base );
+
+			&:hover {
+				color: var( --color-primary--hover );
+			}
+
+			&:active {
+				color: var( --color-primary--active );
+			}
+		}
+
+		&number {
+			display: none;
+			margin-right: 0.25rem;
+			opacity: 0.7;
+		}
+
+		&text {
+			font-weight: 500;
+		}
+
+		ul {
+			list-style: none;
+		}
+
+		> ul {
+			position: relative;
+			z-index: 2;
+			display: block;
+			overflow: visible auto;
+			max-height: ~'calc( 100vh - var( --height-header ) - 3rem )'; // Somehow it works
+			padding-right: 0.75rem;
+			margin: 0.6rem 0 0 0;
+			font-weight: 450;
+			overscroll-behavior: contain;
+
+			ul {
+				margin: 0;
+			}
+		}
+	}
+
+	@media ( max-width: @width-breakpoint-desktop-wide ) {
+		.toc {
+			z-index: 3; // Lower than header
+			pointer-events: none;
+
+			&toggle {
+				&span {
+					display: block;
+					font-size: 0;
+				}
+
+				&label {
+					--label-position: ~'calc( var( --width-toc ) - 20px )';
+					position: fixed;
+					left: var( --label-position );
+					width: 2.5rem;
+					height: 2.5rem;
+					border-radius: 0 var( --border-radius--medium ) var( --border-radius--medium ) 0;
+					cursor: pointer;
+					pointer-events: auto;
+					.citizen-card( false );
+
+					&:hover {
+						background-color: var( --color-surface-3 );
+
+						&:before {
+							opacity: var( --opacity-icon-base--hover );
+						}
+					}
+
+					&:active {
+						background-color: var( --color-surface-1 );
+
+						&:before {
+							opacity: var( --opacity-icon-base--active );
+						}
+					}
+
+					&:before {
+						.resource-loader-icon;
+						display: block;
+						background-size: 1rem;
+						opacity: var( --opacity-icon-base );
+					}
+				}
+
+				// By default .toccheckbox is checked on page load
+				// This is needed to prevent ToC popping up on mobile
+				&checkbox:not( :checked ) {
+					~ .toctitle .toctogglelabel {
+						transform: translateX( ~'calc( var( --label-position ) * -1 )' );
+					}
+
+					~ .toctitle h2,
+					~ ul {
+						transform: translateX( -120% );
+					}
+				}
+			}
+
+			&title h2 {
+				position: absolute;
+				z-index: 3;
+				width: ~'calc( 100% - var( --padding-page ) * 2 )';
+				padding: 1rem var( --padding-page );
+
+				&:before {
+					position: absolute;
+					z-index: -1;
+					top: 0;
+					right: 0;
+					left: 0;
+					height: 100%;
+					background: var( --color-surface-1 );
+					border-radius: var( --border-radius--medium );
+					content: '';
+					-webkit-mask-image: linear-gradient( 180deg, #000, transparent );
+					mask-image: linear-gradient( 180deg, #000, transparent );
+				}
+			}
+
+			> ul {
+				display: block !important; // So that animation is visible
+				max-height: ~'calc( 100vh - var( --height-header ) * 3 )';
+				padding: 2.6rem var( --padding-page ) 1rem var( --padding-page ); // hardcoded for now
+				margin-top: 0;
+				border-radius: var( --border-radius--medium ) 0 var( --border-radius--medium ) var( --border-radius--medium );
+				pointer-events: auto;
+				.citizen-card( false );
+			}
+
+			&togglelabel,
+			&title h2,
+			> ul {
+				opacity: 0;
+				transition: @transition-opacity;
+				visibility: hidden;
+			}
+		}
+
+		// Show toc button when title is hidden
+		.citizen-title--hidden {
+			.toc {
+				&togglelabel,
+				&title h2,
+				> ul {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+
+		.citizen-animations-ready {
+			.toc {
+				&togglelabel,
+				&title h2,
+				> ul {
+					transition: @transition-transform, @transition-opacity;
+				}
+			}
+		}
+
+		.skin-citizen-dark {
+			.toc {
+				&togglelabel {
+					&:before {
+						filter: invert( 1 );
+					}
+				}
+			}
+		}
+	}
+
+	@media ( max-width: @width-breakpoint-tablet ) {
+		.toc {
+			right: 0;
+
+			> ul {
+				max-height: 60vh;
+			}
+		}
+	}
+
+	@media ( max-width: @width-breakpoint-mobile ) {
+		.toc {
+			max-width: ~'calc(100vw - var( --padding-page ) * 2)';
+		}
+	}
+
+	@media ( min-width: @width-breakpoint-desktop-wide ) {
+		.citizen-toc-enabled {
+			.mw-body-header,
+			.citizen-body {
+				margin-right: ~'max( var( --margin-layout ), 0 )';
+				margin-left: ~'max( var( --margin-layout ), var( --width-toc ) )';
+			}
+		}
+	}
+}

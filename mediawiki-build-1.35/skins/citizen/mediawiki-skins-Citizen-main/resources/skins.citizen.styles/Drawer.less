@@ -1,0 +1,131 @@
+.citizen-drawer {
+	&__card {
+		position: absolute;
+		top: 0;
+		left: 0;
+		overflow: auto;
+		max-height: ~'calc(100vh - var( --margin-header ) * 2 )';
+		margin: var( --margin-header ) var( --padding-header );
+		overscroll-behavior: contain;
+		user-select: none;
+		will-change: transform;
+		.citizen-card();
+		.citizen-card-hide( top left );
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		padding: var( --size-button--header ) var( --padding-page ) 0.8rem; // TODO: Replace with space token
+		border-bottom: 1px solid var( --border-color-base );
+		gap: 1.25rem;
+	}
+
+	// Keep aspect ratio
+	&__logo img {
+		width: auto;
+		height: 3rem;
+	}
+
+	&__siteinfo {
+		.mw-logo-wordmark {
+			margin-top: 0.375rem;
+			color: var( --color-base--emphasized );
+			font-size: 1.5rem;
+		}
+	}
+
+	&__menu {
+		display: grid;
+		max-width: 92vw;
+		justify-content: center;
+		padding: 0.625rem 0.625rem 1.25rem 0.625rem; // TODO: Replace with space token
+		font-size: 0.875rem; // TODO: Make this a variable
+		gap: 0.625rem; // TODO: Replace with space token
+		grid-template-columns: repeat( auto-fit, 15rem );
+
+		a {
+			.menu-item-link;
+			padding: 0.625rem 1.25rem; // TODO: Make this a variable
+			border-radius: var( --border-radius--small );
+
+			&:after {
+				.resource-loader-list-icon;
+				display: block;
+				background-size: contain;
+				opacity: var( --opacity-icon-base );
+				transition: @transition-opacity;
+			}
+
+			&:hover {
+				.menu-item-link-hover;
+
+				&:after {
+					opacity: var( --opacity-icon-base--hover );
+				}
+			}
+
+			&:active {
+				.menu-item-link-active;
+
+				&:after {
+					opacity: var( --opacity-icon-base--active );
+				}
+			}
+		}
+	}
+}
+
+// Checkbox hack
+#citizen-drawer__checkbox:checked {
+	~ .citizen-drawer__card {
+		.citizen-card-show;
+	}
+}
+
+// Wait for first paint before animating
+.citizen-animations-ready {
+	.citizen-drawer__card {
+		.citizen-card-transition();
+	}
+}
+
+.skin-citizen-dark {
+	// Icons in nav links
+	.citizen-drawer__menu a:after {
+		filter: invert( 1 );
+	}
+}
+
+@media ( max-width: @width-breakpoint-tablet ) {
+	.citizen-drawer {
+		&__card {
+			right: 0;
+		}
+
+		&__header {
+			justify-content: center;
+		}
+	}
+}
+
+@media ( min-width: @width-breakpoint-tablet ) {
+	.citizen-drawer {
+		&__logo img {
+			// Bigger logo
+			height: 5rem;
+		}
+
+		&__siteinfo {
+			.mw-logo-wordmark {
+				font-size: 2rem;
+			}
+		}
+	}
+}
+
+@media ( min-width: @width-breakpoint-desktop-wide ) {
+	.citizen-drawer__menu {
+		max-width: 1200px; // So that it doesn't span too wide
+	}
+}

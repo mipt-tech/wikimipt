@@ -1,0 +1,113 @@
+@width-breakpoint-desktop-wider: @width-breakpoint-desktop + @width-toc * 2;
+
+.mw-body,
+.parsoid-body {
+	min-height: 80vh; // avoid footer being in the middle of the page
+	padding: 0 var( --padding-page );
+	margin-top: var( --height-header );
+}
+
+.mw-body-header,
+.citizen-body {
+	max-width: var( --width-layout );
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.mw-body-header {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	padding-top: @content-margin-top;
+	margin-bottom: @content-margin-top * 2;
+	gap: @content-margin-top;
+}
+
+.page-heading {
+	flex-grow: 1;
+}
+
+.firstHeading-container {
+	display: flex;
+	align-items: center;
+}
+
+.citizen-body {
+	.mixin-clearfix();
+}
+
+a.image {
+	> img {
+		max-width: inherit;
+		height: auto;
+	}
+}
+
+#mw-data-after-content {
+	padding-bottom: var( --padding-page );
+	background: var( --color-surface-0 );
+}
+
+.mw-footer,
+#mw-data-after-content {
+	position: relative;
+	margin-top: var( --padding-page );
+
+	// Footer spacer
+	&:before {
+		position: absolute;
+		top: ~'calc( var( --padding-page ) * -2 )';
+		right: 0;
+		left: 0;
+		display: block;
+		height: ~'calc( var( --padding-page ) * 2 )';
+		background: var( --color-surface-0 );
+		content: '';
+		-webkit-mask-image: linear-gradient( 0deg, #000, transparent );
+		mask-image: linear-gradient( 0deg, #000, transparent );
+	}
+}
+
+#mw-data-after-content + .mw-footer {
+	margin-top: 0;
+}
+
+@media ( min-width: @width-breakpoint-tablet ) {
+	div.tleft,
+	figure.mw-halign-left,
+	div.floatleft,
+	table.floatleft {
+		/* @noflip */
+		margin-right: 1.4rem;
+		/* @noflip */
+		clear: left;
+		/* @noflip */
+		float: left;
+	}
+
+	div.tright,
+	figure.mw-halign-right,
+	figure.mw-default-size,
+	div.floatright,
+	table.floatright {
+		/* @noflip */
+		margin-left: 1.4rem;
+		/* @noflip */
+		clear: right;
+		/* @noflip */
+		float: right;
+	}
+}
+
+/* Wider page width for certain namespaces */
+@media ( min-width: @width-breakpoint-desktop-wide ) {
+	// 1 - Special, 6 - File, 14 - Category
+	.ns {
+		&--1,
+		&-6,
+		&-14 {
+			--width-layout: @width-breakpoint-desktop-wide - @padding-page * 2;
+		}
+	}
+}

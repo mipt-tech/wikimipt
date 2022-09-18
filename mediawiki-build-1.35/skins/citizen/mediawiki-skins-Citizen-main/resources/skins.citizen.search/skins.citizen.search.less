@@ -1,0 +1,117 @@
+@import '../variables.less';
+@import '../mixins.less';
+
+.citizen-typeahead {
+	position: absolute;
+	top: 100%;
+	overflow: auto;
+	width: 100%;
+	max-height: ~'calc( 100vh - var( --height-header ) )';
+	box-sizing: border-box;
+	padding-top: 0.75rem;
+	margin-top: -0.75rem;
+	//border-radius: 0 0 var( --border-radius--medium ) var( --border-radius--medium );
+	.citizen-card;
+	.citizen-card-hide( 50% 0, Y, false );
+	// Well this won't be loaded before .citizen-animation-ready anyways
+	.citizen-card-transition();
+
+	&-suggestion {
+		padding-top: 0.375rem;
+		padding-bottom: 0.375rem;
+
+		&__thumbnail {
+			overflow: hidden;
+			height: 60px;
+			background-color: #eaecf0;
+			border-radius: var( --border-radius--medium );
+
+			img,
+			source {
+				object-fit: cover;
+			}
+		}
+
+		&__text {
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		&__title {
+			color: var( --color-base--emphasized );
+			font-weight: 700;
+		}
+
+		&__highlight {
+			color: var( --color-base--subtle );
+			font-weight: 500;
+		}
+
+		&__redirect {
+			margin-left: 0.25rem;
+			color: var( --color-base );
+			font-size: 0.8125rem;
+		}
+
+		&__description {
+			margin-top: 0.1rem;
+			color: var( --color-base--subtle );
+			font-size: @content-caption-size;
+		}
+
+		&__title,
+		&__description {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+
+	&-footer {
+		padding-top: var( --border-radius--large );
+		padding-bottom: var( --border-radius--large );
+		border-top: 1px solid var( --border-color-base );
+		border-radius: 0 0 var( --border-radius--large ) var( --border-radius--large );
+		font-size: 0.8125rem;
+		font-weight: 450;
+
+		&__icon {
+			height: var( --size-icon );
+		}
+
+		&__text {
+			strong {
+				color: var( --color-base--emphasized );
+			}
+		}
+	}
+
+	&-option {
+		&--active {
+			background-color: var( --background-color-primary--hover );
+		}
+	}
+
+	a {
+		display: flex;
+		align-items: center;
+		padding-right: 0.75rem;
+		padding-left: 0.75rem;
+		color: var( --color-base );
+	}
+
+	picture {
+		width: 100%;
+		max-width: 70px;
+		margin-right: 0.75rem;
+
+		img,
+		source {
+			width: inherit;
+			height: inherit;
+		}
+	}
+
+	&--expanded {
+		.citizen-card-show( false );
+	}
+}
