@@ -4,6 +4,7 @@
 version: '3'
 services:
   mediawiki:
+    image: registry.gitlab.com/fpmi/wikimipt/wikimipt:latest
     build: mediawiki-build-1.35
     restart: always
     ports:
@@ -32,7 +33,7 @@ services:
     volumes:
       - ./mysql-data:/var/lib/mysql
     ports:
-      - 33336:3306
+      - 127.0.0.1:33336:3306
     networks:
       - mediawiki-net
 
