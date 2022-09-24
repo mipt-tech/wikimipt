@@ -126,39 +126,29 @@ RUN composer config --no-plugins allow-plugins.composer/installers true && \
     composer require --no-update mediawiki/header-footer:3.0.1  && \
     composer require --no-update mediawiki/page-forms:5.4  && \
     composer require --no-update mediawiki/semantic-result-formats:4.0.1  && \
+    composer require --no-update mediawiki/pluggable-auth:6.1  && \
     composer update --no-dev --no-interaction
 
-# Installing MediaWiki/Ratings
-# https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Ratings/+/refs/heads/master
-# https://www.mediawiki.org/w/index.php?oldid=1435552
-RUN wget --no-check-certificate -O extensions/Ratings.tar.gz https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Ratings/+archive/refs/heads/master.tar.gz && \
-    mkdir extensions/Ratings && \
-    tar -xvf extensions/Ratings.tar.gz --directory extensions/Ratings
-
 # Installing Math extension
+# https://www.mediawiki.org/wiki/Extension:Math
 COPY extensions/Math-REL1_35-4ec097f.tar.gz extensions/Math.tar.gz
-RUN mkdir extensions/Math && \
-    tar -xvf extensions/Math.tar.gz --directory extensions
-
-# Installing pluggable auth
-RUN wget --no-check-certificate -O extensions/PluggableAuth.tar.gz https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_35-e2589cd.tar.gz && \
-    mkdir extensions/PluggableAuth && \
-    tar -xvf extensions/PluggableAuth.tar.gz --directory extensions
+RUN tar -xvf extensions/Math.tar.gz --directory extensions
 
 # Installing SemanticInternalObjects extension
-RUN wget --no-check-certificate -O extensions/SemanticInternalObjects.tar.gz https://extdist.wmflabs.org/dist/extensions/SemanticInternalObjects-REL1_35-d03dda4.tar.gz && \
-    tar -xvf extensions/SemanticInternalObjects.tar.gz --directory extensions
+# https://www.mediawiki.org/wiki/Extension:SemanticInternalObjects
+COPY extensions/SemanticInternalObjects-REL1_35-d03dda4.tar.gz extensions/SemanticInternalObjects.tar.gz
+RUN tar -xvf extensions/SemanticInternalObjects.tar.gz --directory extensions
 
 # Installing CharInsert extension
-RUN wget --no-check-certificate -O extensions/CharInsert.tar.gz https://extdist.wmflabs.org/dist/extensions/CharInsert-REL1_35-89fa92f.tar.gz && \
-    tar -xvf extensions/CharInsert.tar.gz --directory extensions
- 
-# Installing SimpleFeed extension
-RUN cd ./extensions && git clone https://github.com/jonnylamb/simplefeed.git && chown -R www-data: ./simplefeed/*
+# https://www.mediawiki.org/wiki/Extension:CharInsert
+COPY extensions/CharInsert-REL1_35-89fa92f.tar.gz extensions/CharInsert.tar.gz
+RUN  tar -xvf extensions/CharInsert.tar.gz --directory extensions
 
 # Installing RatePage extension
-RUN wget -O extensions/RatePage.tar.gz https://gitlab.com/nonsensopedia/extensions/ratepage/-/archive/REL1_35/ratepage-REL1_35.tar.gz && \
-    tar -xvf extensions/RatePage.tar.gz --directory extensions && \
+# https://www.mediawiki.org/wiki/Extension:RatePage
+# https://gitlab.com/nonsensopedia/extensions/ratepage/-/archive/REL1_35/ratepage-REL1_35.tar.gz
+COPY extensions/ratepage-REL1_35.tar.gz extensions/RatePage.tar.gz
+RUN tar -xvf extensions/RatePage.tar.gz --directory extensions && \
     mv extensions/ratepage-REL1_35 extensions/RatePage
 
 # Installing OAuth2 Client extension (https://www.mediawiki.org/wiki/Extension:OAuth2_Client )
@@ -174,8 +164,7 @@ COPY extensions/Comments extensions/Comments
 
 # Installing MobileFrontend extension
 COPY extensions/MobileFrontend-REL1_35-a4f595e.tar.gz extensions/MobileFrontend.tar.gz
-RUN mkdir extensions/MobileFrontend && \
-    tar -xvf extensions/MobileFrontend.tar.gz --directory extensions
+RUN tar -xvf extensions/MobileFrontend.tar.gz --directory extensions
 
 # Installing Citizen skin
 COPY skins/citizen.zip skins/citizen.zip
