@@ -1,0 +1,5 @@
+- name: Run update php command
+  ansible.builtin.command: docker-compose run mediawiki php maintenance/update.php --quick
+  args:
+    chdir: "{{ mediawiki_deploy_dir }}"
+  changed_when: true

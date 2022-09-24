@@ -1,0 +1,47 @@
+---
+- name: Create base deploy directory
+  ansible.builtin.file:
+    path: "{{ mediawiki_deploy_dir }}"
+    state: directory
+    mode: 0755
+    owner: "{{ deploy_user }}"
+    group: "{{ deploy_user }}"
+  become: true
+
+- name: Create mountable directories for images && logs
+  ansible.builtin.file:
+    path: "{{ mediawiki_aux_folders }}"
+    state: directory
+    mode: 0755
+    owner: 33 # Hardcoded in-container apache user
+    group: 33 # Hardcoded in-container apache group
+  loop:
+    - "{{ mediawiki_deploy_dir }}/images"
+    - "{{ mediawiki_deploy_dir }}/logs"
+  loop_control:
+    loop_var: mediawiki_aux_folders
+  become: true
+
+- name: Render LocalSettings.php file
+  ansible.builtin.template:
+    src: "LocalSettings.php"
+    dest: "{{ mediawiki_deploy_dir }}/"
+    owner: 33
+    group: 33
+    mode: 0644
+  become: true
+  notify: restart mediawiki service
+
+- name: Copy logo & favicon files
+  ansible.builtin.copy:
+    src: "{{ mediawiki_img_filename }}"
+    dest: "{{ mediawiki_deploy_dir }}/images/{{ mediawiki_img_filename }}"
+    owner: 33
+    group: 33
+    mode: 0644
+  loop:
+    - "mediawiki_favicon.ico"
+    - "mediawiki_logo.png"
+  loop_control:
+    loop_var: mediawiki_img_filename
+  become: true

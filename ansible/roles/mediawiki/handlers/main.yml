@@ -1,0 +1,21 @@
+- name: Restart mediawiki docker-compose services
+  community.docker.docker_compose:
+    state: present
+    restarted: true
+    project_src: "{{ mediawiki_deploy_dir }}"
+  register: mediawiki_compose_restart_output
+  listen: "restart mediawiki service"
+  notify: "show restart mediawiki output"
+
+- name: Show docker-compose restart output
+  ansible.builtin.debug:
+    var: mediawiki_compose_restart_output
+  listen: "show restart mediawiki output"
+  notify: "check if mediawiki successfully running"
+
+- name: Check if mediawiki services are in running state
+  ansible.builtin.assert:
+    that:
+      - "mediawiki_compose_restart_output.services.mediawiki.wikimipt_mediawiki.state.running"
+      - "mediawiki_compose_restart_output.services.memcached.wikimipt_memcached.state.running"
+  listen: "check if mediawiki successfully running"

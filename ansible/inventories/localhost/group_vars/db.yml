@@ -1,0 +1,6 @@
+percona_mysql_deploy_dir: "{{ deploy_dir }}/mediawiki-db"
+
+percona_mysql_root_password: "jfQjSecSUHmiqq9b6LcvKy03rqezIpn06ioPLJhEaD8"
+percona_mysql_database_name: "mediawiki"
+percona_mysql_common_user: "mediawiki"
+percona_mysql_common_user_pass: "FaNeZEeaIJdPVbNV7jnVcFrsxJKDXNPmRditRId86QI"

@@ -1,0 +1,26 @@
+version: "3.1"
+
+services:
+  percona:
+    container_name: wikimipt_percona
+    hostname: wikimipt_percona
+    image: percona/percona-server:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "{{ percona_mysql_root_password }}"
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_DATABASE: "{{ percona_mysql_database_name }}"
+      MYSQL_USER: "{{ percona_mysql_common_user }}"
+      MYSQL_PASSWORD: "{{ percona_mysql_common_user_pass }}"
+    volumes:
+      - "{{ percona_mysql_conf_dir }}:/etc/my.cnf.d"
+      - "{{ percona_mysql_data_dir }}:/var/lib/mysql"
+      - "{{ percona_mysql_logs_dir }}:/var/log/mysql"
+    ports:
+      - 127.0.0.1:33336:3306  # Open local 33336 port to be able to access db with mysql client
+    networks:
+      - mediawiki-net
+
+networks:
+  mediawiki-net:
+    external: true

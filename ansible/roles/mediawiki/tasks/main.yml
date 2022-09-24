@@ -1,0 +1,16 @@
+---
+- name: Creating necessary files and directories
+  ansible.builtin.import_tasks: deploy_files.yml
+  when: mediawiki_action == "deploy"
+
+- name: Deploy with docker-compose
+  ansible.builtin.import_tasks: deploy_compose.yml
+  when: mediawiki_action == "deploy"
+
+- name: Run force restart
+  ansible.builtin.import_tasks: force_restart.yml
+  when: mediawiki_action == "restart"
+
+- name: Run php maintenance update
+  ansible.builtin.import_tasks: update.yml
+  when: mediawiki_action == "update_db"

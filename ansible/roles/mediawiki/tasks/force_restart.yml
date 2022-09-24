@@ -1,0 +1,16 @@
+- name: Up mediawiki docker-compose services
+  community.docker.docker_compose:
+    state: present
+    recreate: always
+    project_src: "{{ mediawiki_deploy_dir }}"
+  register: mediawiki_compose_up_output
+
+- name: Show docker-compose up output
+  ansible.builtin.debug:
+    var: mediawiki_compose_up_output
+
+- name: Check if mediawiki services are in running state
+  ansible.builtin.assert:
+    that:
+      - "mediawiki.wikimipt_mediawiki.state.running"
+      - "memcached.wikimipt_memcached.state.running"

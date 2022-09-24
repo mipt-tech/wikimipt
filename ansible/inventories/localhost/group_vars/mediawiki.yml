@@ -1,0 +1,15 @@
+mediawiki_deploy_dir: "{{ deploy_dir }}/mediawiki"
+mediawiki_server_schema: "http" # Or "https"
+mediawiki_server_domain: "localhost:8100"
+
+mediawiki_mysql_host: percona
+mediawiki_mysql_user: mediawiki
+mediawiki_mysql_db: mediawiki
+mediawiki_mysql_password: FaNeZEeaIJdPVbNV7jnVcFrsxJKDXNPmRditRId86QI
+
+mediawiki_secret: 55717850f6b822ec8001f5dc32e54530c4e695ec29aa61a6e4ec10bb36bf5ff0
+
+mediawiki_yandex_oauth_client_id: 4328b2a6cdf84bc886159c1234fed055
+mediawiki_yandex_oauth_client_secret: 71cffbcc5bbe49e79854c51ef3edb004
+
+mediawiki_enable_debug: true

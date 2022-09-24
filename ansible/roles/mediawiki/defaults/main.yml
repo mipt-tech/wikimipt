@@ -1,0 +1,20 @@
+mediawiki_deploy_dir: "/opt/mediawiki"
+mediawiki_server_schema: "http" # Or "https"
+mediawiki_server_domain: "localhost:8100"
+
+mediawiki_deploy_mode: "compose" # "compose" for docker-compose or "swarm" for docker swarm
+                                 # TODO: Implement swarm mode
+
+mediawiki_action: "deploy"
+
+mediawiki_mysql_host: percona
+mediawiki_mysql_user: mysql
+mediawiki_mysql_db: mysql
+mediawiki_mysql_password: mysql
+
+mediawiki_secret: null
+
+mediawiki_yandex_oauth_client_id: null
+mediawiki_yandex_oauth_client_secret: null
+
+mediawiki_enable_debug: true

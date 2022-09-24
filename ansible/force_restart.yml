@@ -1,0 +1,14 @@
+---
+- name: Deploy mediawiki
+  hosts: [mediawiki]
+  roles:
+    - mediawiki
+  vars:
+    mediawiki_force_restart: true      
+
+- name: Deploy mediawiki database
+  hosts: [db]
+  roles:
+    - percona_mysql
+  vars:
+    percona_mysql_force_restart: true

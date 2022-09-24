@@ -1,0 +1,17 @@
+---
+- name: Deploy mediawiki database
+  hosts: [db]
+  roles:
+    - percona_mysql
+
+- name: Deploy mediawiki
+  hosts: [mediawiki]
+  roles:
+    - mediawiki
+
+- name: Run mediawiki management scripts
+  hosts: [mediawiki]
+  roles:
+    - mediawiki
+  vars:
+    mediawiki_action: update_db

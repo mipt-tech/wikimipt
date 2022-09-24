@@ -1,0 +1,11 @@
+percona_mysql_deploy_dir: "/opt/mysql"
+percona_mysql_conf_dir: "{{ percona_mysql_deploy_dir }}/conf"
+percona_mysql_data_dir: "{{ percona_mysql_deploy_dir }}/data"
+percona_mysql_logs_dir: "{{ percona_mysql_deploy_dir }}/logs"
+
+percona_mysql_force_restart: false
+
+percona_mysql_root_password: "root"
+percona_mysql_database_name: "mysql"
+percona_mysql_common_user: "mysql"
+percona_mysql_common_user_pass: "mysql"

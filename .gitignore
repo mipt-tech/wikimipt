@@ -2,3 +2,6 @@ mediawiki-data/backups
 mediawiki-data/images
 mediawiki-data/logs
 mysql-data
+
+deploy
+ansible/crypto_key.txt

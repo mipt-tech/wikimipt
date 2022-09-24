@@ -1,0 +1,31 @@
+---
+- name: Create base deploy directory
+  ansible.builtin.file:
+    path: "{{ percona_mysql_deploy_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Create mysql data && conf directory
+  ansible.builtin.file:
+    path: "{{ mysql_dir_path }}"
+    state: directory
+    mode: 0755
+    owner: 1001
+    group: 1001
+  loop:
+    - "{{ percona_mysql_conf_dir }}"
+    - "{{ percona_mysql_data_dir }}"
+    - "{{ percona_mysql_logs_dir }}"
+  loop_control:
+    loop_var: mysql_dir_path
+  become: true
+
+- name: Render my.cnf file
+  ansible.builtin.template:
+    src: "my.cnf"
+    dest: "{{ percona_mysql_deploy_dir }}/conf/00_default.cnf"
+    owner: 1001
+    group: 1001
+    mode: 0640
+  become: true
+  notify: restart percona mysql service

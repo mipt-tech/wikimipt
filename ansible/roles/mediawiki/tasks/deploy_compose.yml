@@ -1,0 +1,58 @@
+---
+- name: Check & install docker python package needed for role execution
+  ansible.builtin.pip:
+    name:
+      - docker
+      - docker-compose
+  become: true
+
+- name: Create docker network
+  community.docker.docker_network:
+    name: mediawiki-net
+    driver_options:
+      com.docker.network.bridge.name: mediawiki-net
+    ipam_config:
+      - subnet: 172.201.0.0/24
+        gateway: 172.201.0.1
+
+- name: Render Mediawiki Сompose file
+  ansible.builtin.template:
+    src: "docker-compose.yml"
+    dest: "{{ mediawiki_deploy_dir }}/docker-compose.yml"
+    owner: "{{ deploy_user }}"
+    mode: 0644
+  become: true
+  notify: restart mediawiki service
+
+- name: Pull mediawiki docker image
+  community.docker.docker_image:
+    name: registry.gitlab.com/fpmi/wikimipt/mediawiki/mipt_tech_wikimipt_mediawiki
+    source: pull
+    tag: latest
+  become: true
+  notify: restart mediawiki service
+
+- name: Pull memcached docker image
+  community.docker.docker_image:
+    name: memcached
+    source: pull
+    tag: latest
+  become: true
+  notify: restart mediawiki service
+
+- name: Up mediawiki services
+  community.docker.docker_compose:
+    state: present
+    remove_orphans: true
+    project_src: "{{ mediawiki_deploy_dir }}"
+  register: mediawiki_compose_up_output
+
+- name: Show docker-compose up output
+  ansible.builtin.debug:
+    var: mediawiki_compose_up_output
+
+- name: Check if mediawiki services are in running state
+  ansible.builtin.assert:
+    that:
+      - "mediawiki_compose_up_output.services.mediawiki.wikimipt_mediawiki.state.running"
+      - "mediawiki_compose_up_output.services.memcached.wikimipt_memcached.state.running"

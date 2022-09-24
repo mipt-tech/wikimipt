@@ -1,0 +1,36 @@
+---
+- name: Check & install python packages needed for role execution
+  ansible.builtin.pip:
+    name:
+      - docker
+  become: true
+
+- name: Render docker-compose file
+  ansible.builtin.template:
+    src: "docker-compose.yml"
+    dest: "{{ percona_mysql_deploy_dir }}/docker-compose.yml"
+    mode: 0640
+  notify: restart percona mysql service
+
+- name: Pull percona-mysql docker image
+  community.docker.docker_image:
+    name: percona/percona-server
+    source: pull
+    tag: 8.0
+  become: true
+  notify: restart percona mysql service
+
+- name: Up percona mysql services
+  community.docker.docker_compose:
+    state: present
+    project_src: "{{ percona_mysql_deploy_dir }}"
+  register: percona_compose_up_output
+
+- name: Show docker-compose up output
+  ansible.builtin.debug:
+    var: percona_compose_up_output
+
+- name: Check if mysql server is in running state
+  ansible.builtin.assert:
+    that:
+      - "percona_compose_up_output.services.percona.wikimipt_percona.state.running"

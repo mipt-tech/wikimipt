@@ -1,0 +1,20 @@
+- name: Restart mediawiki docker-compose services
+  community.docker.docker_compose:
+    state: present
+    restarted: true
+    project_src: "{{ percona_mysql_deploy_dir }}"
+  register: percona_mysql_restart_output
+  listen: "restart percona mysql service"
+  notify: "get percona mysql restart output"
+
+- name: Show docker-compose restart output
+  ansible.builtin.debug:
+    var: percona_mysql_restart_output
+  listen: "get percona mysql restart output"
+  notify: "check if percona mysql is running"
+
+- name: Check if mediawiki services are in running state
+  ansible.builtin.assert:
+    that:
+      - "percona.wikimipt_percona.state.running"
+  listen: "check if percona mysql is running"
