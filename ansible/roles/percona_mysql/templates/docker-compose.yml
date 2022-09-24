@@ -4,7 +4,7 @@ services:
   percona:
     container_name: wikimipt_percona
     hostname: wikimipt_percona
-    image: percona/percona-server:8.0
+    image: percona/percona-server:5.7
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "{{ percona_mysql_root_password }}"
@@ -16,6 +16,7 @@ services:
       - "{{ percona_mysql_conf_dir }}:/etc/my.cnf.d"
       - "{{ percona_mysql_data_dir }}:/var/lib/mysql"
       - "{{ percona_mysql_logs_dir }}:/var/log/mysql"
+      - "{{ percona_mysql_initial_scripts_dir }}:/docker-entrypoint-initdb.d"
     ports:
       - 127.0.0.1:33336:3306  # Open local 33336 port to be able to access db with mysql client
     networks:

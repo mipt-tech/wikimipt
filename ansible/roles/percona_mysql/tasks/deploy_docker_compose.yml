@@ -16,7 +16,7 @@
   community.docker.docker_image:
     name: percona/percona-server
     source: pull
-    tag: 8.0
+    tag: 5.7
   become: true
   notify: restart percona mysql service
 

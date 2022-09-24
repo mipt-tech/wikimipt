@@ -14,6 +14,7 @@
     group: 1001
   loop:
     - "{{ percona_mysql_conf_dir }}"
+    - "{{ percona_mysql_initial_scripts_dir }}"
     - "{{ percona_mysql_data_dir }}"
     - "{{ percona_mysql_logs_dir }}"
   loop_control:
@@ -23,9 +24,18 @@
 - name: Render my.cnf file
   ansible.builtin.template:
     src: "my.cnf"
-    dest: "{{ percona_mysql_deploy_dir }}/conf/00_default.cnf"
+    dest: "{{ percona_mysql_conf_dir }}/00_default.cnf"
     owner: 1001
     group: 1001
     mode: 0640
   become: true
   notify: restart percona mysql service
+
+- name: Render initial.sql file
+  ansible.builtin.template:
+    src: "mediawiki_initial.sql"
+    dest: "{{ percona_mysql_initial_scripts_dir }}/mediawiki_initial.sql"
+    owner: 1001
+    group: 1001
+    mode: 0640
+  become: true
