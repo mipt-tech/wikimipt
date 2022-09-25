@@ -9,3 +9,4 @@
         build:
           path: "{{ project_dir }}/mediawiki-build-1.35"
         source: build
+        force_source: true
