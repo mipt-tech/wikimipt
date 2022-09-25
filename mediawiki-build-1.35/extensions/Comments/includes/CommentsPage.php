@@ -130,6 +130,7 @@ class CommentsPage extends ContextSource {
 			'Comments',
 			[ 'COUNT(*) AS CommentCount' ],
 			[ 'Comment_Page_ID' => $this->id ],
+			[ 'Comment_deleted' => 0 ],
 			__METHOD__
 		);
 		if ( $s !== false ) {
@@ -176,7 +177,8 @@ class CommentsPage extends ContextSource {
 			'comments',
 			$this->id,
 			$this->getCurrentPagerPage(),
-			$this->getSort()
+			$this->getSort(),
+			$this->getUser()->isAnon(),
 		);
 		$cachedValue = $cache->get( $cacheKey );
 		if ( !$cachedValue ) {
@@ -569,7 +571,15 @@ class CommentsPage extends ContextSource {
 					'comments',
 					$this->id,
 					$page,
-					$sort
+					$sort,
+					false,
+				);
+				$keys[] = $cache->makeKey(
+					'comments',
+					$this->id,
+					$page,
+					$sort,
+					true,
 				);
 			}
 		}
@@ -677,6 +687,7 @@ class CommentsPage extends ContextSource {
 				'Comment_user_points' => ( isset( $row->stats_total_points ) ? number_format( $row->stats_total_points ) : 0 ),
 				'CommentID' => $row->CommentID,
 				'Comment_Parent_ID' => $row->Comment_Parent_ID,
+				'Comment_hidden' => $row->Comment_hidden,
 				'thread' => $thread,
 				'timestamp' => wfTimestamp( TS_UNIX, $row->timestamp ),
 				'current_vote' => ( isset( $row->current_vote ) ? $row->current_vote : false ),

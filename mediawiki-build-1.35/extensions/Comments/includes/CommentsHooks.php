@@ -131,6 +131,8 @@ class CommentsHooks {
 		if ( !$db->fieldExists( 'Comments', $caseSensitiveDb ? 'Comment_actor' : 'comment_actor', __METHOD__ ) ) {
 			// 1) add new actor columns
 			$updater->addExtensionField( 'Comments', $caseSensitiveDb ? 'Comment_actor' : 'comment_actor', "$dir/patches/actor/add-Comment_actor{$patchFileSuffix}.sql" );
+			$updater->addExtensionField( 'Comments', $caseSensitiveDb ? 'Comment_hidden' : 'comment_hidden', "$dir/patches/actor/add-Comment_hidden{$patchFileSuffix}.sql" );
+			$updater->addExtensionField( 'Comments', $caseSensitiveDb ? 'Comment_deleted' : 'comment_deleted', "$dir/patches/actor/add-Comment_deleted{$patchFileSuffix}.sql" );
 			// 2) add the corresponding indexes
 			$updater->addExtensionIndex( 'Comments', 'wiki_actor', "$dir/patches/actor/add-wiki_actor_index.sql" );
 			// 3) populate the new column with data

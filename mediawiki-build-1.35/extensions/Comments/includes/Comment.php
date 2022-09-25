@@ -117,6 +117,15 @@ class Comment extends ContextSource {
 	public $timestamp = null;
 
 	/**
+	 * Hidden comment flag.
+	 * When equal to 1, then comment will be hidden for non-authorized people
+	 * Processed from $date
+	 *
+	 * @var null
+	 */
+	public $hidden = null;
+
+	/**
 	 * Constructor - set the page ID
 	 *
 	 * @param CommentsPage $page ID number of the current page
@@ -153,6 +162,7 @@ class Comment extends ContextSource {
 		$this->userPoints = $data['Comment_user_points'];
 		$this->id = (int)$data['CommentID'];
 		$this->parentID = (int)$data['Comment_Parent_ID'];
+		$this->hidden = $data['Comment_hidden'];
 		$this->thread = $data['thread'];
 		$this->timestamp = $data['timestamp'];
 
@@ -252,6 +262,7 @@ class Comment extends ContextSource {
 			'Comment_user_points' => ( isset( $row->stats_total_points ) ? number_format( $row->stats_total_points ) : 0 ),
 			'CommentID' => $row->CommentID,
 			'Comment_Parent_ID' => $row->Comment_Parent_ID,
+			'Comment_hidden' => $row->Comment_hidden,
 			'thread' => $thread,
 			'timestamp' => wfTimestamp( TS_UNIX, $row->timestamp )
 		];
@@ -389,6 +400,7 @@ class Comment extends ContextSource {
 			'Comment_user_points' => $userPoints,
 			'CommentID' => $id,
 			'Comment_Parent_ID' => $parentID,
+			'Comment_hidden' => 0,
 			'thread' => $thread,
 			'timestamp' => strtotime( $commentDate )
 		];
@@ -896,10 +908,18 @@ class Comment extends ContextSource {
 			}
 		}
 
+		$comment_class = ' ';
 		if ( $this->parentID == 0 ) {
-			$comment_class = 'f-message';
+			$comment_class .= 'f-message ';
 		} else {
-			$comment_class = 'r-message';
+			$comment_class .= 'r-message ';
+		}
+
+		if (intval($this->currentScore) < -2 && intval($this->currentScore) > -10) {
+			$comment_class .= 'c-message-negative-scored-' . abs(intval($this->currentScore)) . ' ';
+		}
+		if (intval($this->currentScore) <= -10) {
+			$comment_class .= 'c-message-negative-scored-9 ';
 		}
 
 		// Display Block icon for logged in users for comments of users
@@ -919,7 +939,7 @@ class Comment extends ContextSource {
 		}
 
 		// Default avatar image, if SocialProfile extension isn't enabled
-		$avatarImg = '<img src="' . $wgCommentsDefaultAvatar . '" alt="" border="0" />';
+		$avatarImg = '<img style="width: 68px; border: none;" src="https://avatars.dicebear.com/api/croodles/' . $this->ip . '.png" alt="" border="0" />';
 		// If SocialProfile *is* enabled, then use its wAvatar class to get the avatars for each commenter
 		if ( class_exists( 'wAvatar' ) ) {
 			$avatar = new wAvatar( $this->user->getId(), 'ml' );
@@ -945,9 +965,18 @@ class Comment extends ContextSource {
 		$output .= $this->getScoreHTML();
 		$output .= '</div>' . "\n";
 
-		$output .= '</div>' . "\n";
+		$output .= '</div>' . "\n"; 
 		$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
-		$output .= $this->getText();
+		if ((intval($this->currentScore) < -10 || $this->hidden ) && $this->getUser()->isAnon()) {
+			if ( $this->page->title ) {
+				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect&returnto=' . $this->page->title->getPrefixedUrl() . "%23comment-{$this->id}";
+			} else {
+				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect';
+			}
+			$output .= '<i>Комментарий скрыт. Чтобы увидеть его, <a href="' . $auth_link . '">авторизуйтесь с почтой @phystech.edu</a></i>';
+		} else {
+			$output .= $this->getText();
+		}
 		$output .= '</div>' . "\n";
 		$output .= '<div class="c-actions">' . "\n";
 		if ( $this->page->title ) { // for some reason doesn't always exist
