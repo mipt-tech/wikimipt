@@ -166,6 +166,10 @@ COPY extensions/Comments extensions/Comments
 COPY extensions/MobileFrontend-REL1_35-a4f595e.tar.gz extensions/MobileFrontend.tar.gz
 RUN tar -xvf extensions/MobileFrontend.tar.gz --directory extensions
 
+# Installing Youtube extension
+COPY extensions/YouTube-REL1_35-9133825.tar.gz extensions/YouTube.tar.gz
+RUN tar -xvf extensions/YouTube.tar.gz --directory extensions
+
 # Installing Citizen skin
 COPY skins/citizen.zip skins/citizen.zip
 RUN unzip skins/citizen.zip -d skins && \

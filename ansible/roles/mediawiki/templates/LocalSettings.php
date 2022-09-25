@@ -190,6 +190,7 @@ wfLoadExtension( 'MobileFrontend' );
 # Add more configuration options below.
 
 wfLoadExtension( 'RatePage' );
+wfLoadExtension( 'YouTube' );
 
 enableSemantics( '{{ mediawiki_server_domain }}' );
 require_once "$IP/extensions/SemanticInternalObjects/SemanticInternalObjects.php";
