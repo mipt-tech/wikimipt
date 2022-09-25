@@ -1,0 +1,15 @@
+- name: Restart percona_mysql docker-compose services
+  community.docker.docker_compose:
+    state: present
+    recreate: always
+    project_src: "{{ percona_mysql_deploy_dir }}"
+  register: pecrona_mysql_compose_restart_output
+
+- name: Show docker-compose restart output
+  ansible.builtin.debug:
+    var: pecrona_mysql_compose_restart_output
+
+- name: Check if percona mysql services are in running state
+  ansible.builtin.assert:
+    that:
+      - "pecrona_mysql_compose_restart_output.services.percona.wikimipt_percona.state.running"

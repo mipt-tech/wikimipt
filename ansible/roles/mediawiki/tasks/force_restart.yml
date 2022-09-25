@@ -12,5 +12,5 @@
 - name: Check if mediawiki services are in running state
   ansible.builtin.assert:
     that:
-      - "mediawiki.wikimipt_mediawiki.state.running"
-      - "memcached.wikimipt_memcached.state.running"
+      - "mediawiki_compose_up_output.services.mediawiki.wikimipt_mediawiki.state.running"
+      - "mediawiki_compose_up_output.services.memcached.wikimipt_memcached.state.running"

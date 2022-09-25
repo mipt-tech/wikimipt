@@ -1,12 +1,12 @@
 ---
 - name: Creating necessary files and directories
   ansible.builtin.import_tasks: files_and_folders.yml
+  when: percona_mysql_action == "deploy"
 
 - name: Deploy with docker-compose
   ansible.builtin.import_tasks: deploy_docker_compose.yml
+  when: percona_mysql_action == "deploy"
 
-- name: Trigger force restart if needed
-  ansible.builtin.debug:
-    msg: Force restarting Percona Mysql Server container...
-  notify: Restart mysql docker container
-  when: percona_mysql_force_restart
+- name: Run force restart
+  ansible.builtin.import_tasks: force_restart.yml
+  when: percona_mysql_action == "restart"

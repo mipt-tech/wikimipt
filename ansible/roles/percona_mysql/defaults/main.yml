@@ -3,7 +3,8 @@ percona_mysql_conf_dir: "{{ percona_mysql_deploy_dir }}/conf"
 percona_mysql_data_dir: "{{ percona_mysql_deploy_dir }}/data"
 percona_mysql_logs_dir: "{{ percona_mysql_deploy_dir }}/logs"
 percona_mysql_initial_scripts_dir: "{{ percona_mysql_deploy_dir }}/init"
-percona_mysql_force_restart: false
+
+percona_mysql_action: "deploy"
 
 percona_mysql_root_password: "root"
 percona_mysql_database_name: "mysql"
