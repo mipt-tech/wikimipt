@@ -617,7 +617,7 @@ class CommentsPage extends ContextSource {
 		$fields = [
 			'Comment_IP', 'Comment_Text', 'Comment_actor',
 			'Comment_Date', 'Comment_Date AS timestamp',
-			'CommentID', 'Comment_Parent_ID',
+			'CommentID', 'Comment_Parent_ID', 'Comment_hidden',
 			// @todo FIXME: this and the stats_total_points are buggy on PostgreSQL
 			// Skizzerz says that the whole query is bugged in general but MySQL "helpfully"
 			// ignores the bugginess and returns potentially incorrect results
@@ -665,7 +665,10 @@ class CommentsPage extends ContextSource {
 		$res = $dbr->select(
 			$tables,
 			$fields,
-			[ 'Comment_Page_ID' => $this->id ],
+			[
+				'Comment_Page_ID' => $this->id,
+				'Comment_deleted' => 0
+			],
 			__METHOD__,
 			$params,
 			$joinConds

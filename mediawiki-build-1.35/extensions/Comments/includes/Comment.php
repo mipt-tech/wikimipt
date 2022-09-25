@@ -162,7 +162,7 @@ class Comment extends ContextSource {
 		$this->userPoints = $data['Comment_user_points'];
 		$this->id = (int)$data['CommentID'];
 		$this->parentID = (int)$data['Comment_Parent_ID'];
-		$this->hidden = $data['Comment_hidden'];
+		$this->hidden = (int)$data['Comment_hidden'];
 		$this->thread = $data['thread'];
 		$this->timestamp = $data['timestamp'];
 
@@ -218,7 +218,7 @@ class Comment extends ContextSource {
 		$fields = [
 			'Comment_actor', 'Comment_IP', 'Comment_Text',
 			'Comment_Date', 'Comment_Date AS timestamp',
-			'CommentID', 'Comment_Parent_ID', 'Comment_Page_ID'
+			'CommentID', 'Comment_Parent_ID', 'Comment_Page_ID', 'Comment_hidden'
 		];
 
 		// If SocialProfile is installed, query the user_stats table too.
@@ -939,7 +939,7 @@ class Comment extends ContextSource {
 		}
 
 		// Default avatar image, if SocialProfile extension isn't enabled
-		$avatarImg = '<img style="width: 68px; border: none;" src="https://avatars.dicebear.com/api/croodles/' . $this->ip . '.png" alt="" border="0" />';
+		$avatarImg = '<img style="width: 52px; border: none; border-radius: 50%;" src="https://avatars.dicebear.com/api/croodles/' . $this->ip . '.png" alt="" border="0" />';
 		// If SocialProfile *is* enabled, then use its wAvatar class to get the avatars for each commenter
 		if ( class_exists( 'wAvatar' ) ) {
 			$avatar = new wAvatar( $this->user->getId(), 'ml' );
