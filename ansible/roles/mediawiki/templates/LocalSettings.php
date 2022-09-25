@@ -129,6 +129,10 @@ $wgDiff3 = "/usr/bin/diff3";
 $wgDefaultSkin = "vector";
 $wgDefaultMobileSkin = "citizen";
 
+#Set Default Timezone
+$wgLocaltimezone = "Europe/Moscow";
+date_default_timezone_set( $wgLocaltimezone );
+
 # Enabled skins.
 # The following skins were automatically enabled:
 wfLoadSkin( 'MonoBook' );
