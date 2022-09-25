@@ -2,4 +2,4 @@ mediawiki-data
 mysql-data
 deploy
 ansible/crypto_key.txt
-
+utils/*.json
