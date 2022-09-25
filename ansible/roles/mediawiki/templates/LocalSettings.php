@@ -205,7 +205,7 @@ $wgOAuth2Client['client']['secret'] = '{{ mediawiki_yandex_oauth_client_secret }
 $wgOAuth2Client['configuration']['authorize_endpoint']     = 'https://oauth.yandex.ru/authorize'; // Authorization URL ?force_confirm=yes
 $wgOAuth2Client['configuration']['access_token_endpoint']  = 'https://oauth.yandex.ru/token'; // Token URL
 $wgOAuth2Client['configuration']['api_endpoint']           = 'https://login.yandex.ru/info?format=json'; // URL to fetch user JSON
-$wgOAuth2Client['configuration']['redirect_uri']           = 'https://polygon-wikimipt.endevir.ru/index.php/Special:OAuth2Client/callback'; // URL for OAuth2 server to redirect to
+$wgOAuth2Client['configuration']['redirect_uri']           = '{{ mediawiki_server_schema }}://{{ mediawiki_server_domain }}/index.php/Special:OAuth2Client/callback'; // URL for OAuth2 server to redirect to
 
 $wgOAuth2Client['configuration']['username'] = 'login'; // JSON path to username
 $wgOAuth2Client['configuration']['email'] = 'default_email'; // JSON path to email
@@ -241,4 +241,9 @@ error_reporting( -1 );
 ini_set( 'display_startup_errors', 1 );
 ini_set( 'display_errors', 1 );
 $wgDebugDumpSql = true;
+{% else %}
+$wgShowExceptionDetails = false;
+$wgShowDebug = false;
+$wgDevelopmentWarnings = false;
+ini_set( 'display_errors', 0 );
 {% endif %}

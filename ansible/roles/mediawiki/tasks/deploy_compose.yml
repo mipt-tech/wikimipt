@@ -12,8 +12,8 @@
     driver_options:
       com.docker.network.bridge.name: mediawiki-net
     ipam_config:
-      - subnet: 172.201.0.0/24
-        gateway: 172.201.0.1
+      - subnet: 172.48.0.0/24
+        gateway: 172.48.0.1
 
 - name: Render Mediawiki Сompose file
   ansible.builtin.template:
@@ -26,7 +26,7 @@
 
 - name: Pull mediawiki docker image
   community.docker.docker_image:
-    name: registry.gitlab.com/fpmi/wikimipt/mediawiki/mipt_tech_wikimipt_mediawiki
+    name: registry.gitlab.com/fpmi/wikimipt/mediawiki
     source: pull
     tag: latest
   become: true

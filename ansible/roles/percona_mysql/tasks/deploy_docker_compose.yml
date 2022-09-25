@@ -3,7 +3,17 @@
   ansible.builtin.pip:
     name:
       - docker
+      - docker-compose
   become: true
+
+- name: Create docker network
+  community.docker.docker_network:
+    name: mediawiki-net
+    driver_options:
+      com.docker.network.bridge.name: mediawiki-net
+    ipam_config:
+      - subnet: 172.48.0.0/24
+        gateway: 172.48.0.1
 
 - name: Render docker-compose file
   ansible.builtin.template:

@@ -1,11 +1,5 @@
 - name: Run update php command
-  ansible.builtin.command: docker-compose run mediawiki php maintenance/update.php --quick
-  args:
-    chdir: "{{ mediawiki_deploy_dir }}"
-  changed_when: true
-
-- name: Run SMW setupStore php command
-  ansible.builtin.command: docker-compose run mediawiki php ./extensions/SemanticMediaWiki/maintenance/setupStore.php
+  ansible.builtin.command: docker-compose exec mediawiki php maintenance/update.php --quick
   args:
     chdir: "{{ mediawiki_deploy_dir }}"
   changed_when: true
