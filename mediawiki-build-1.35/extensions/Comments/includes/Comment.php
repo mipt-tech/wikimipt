@@ -955,10 +955,12 @@ class Comment extends ContextSource {
 
 		AtEase::suppressWarnings(); // E_STRICT bitches about strtotime()
 		$output .= '<div class="c-time">' .
+			$this->date .
+			'&nbsp;<i>(' .
 			wfMessage(
 				'comments-time-ago',
 				CommentFunctions::getTimeAgo( strtotime( $this->date ) )
-			)->parse() . '</div>' . "\n";
+			)->parse() . ')</i></div>' . "\n";
 		AtEase::restoreWarnings();
 
 		$output .= '<div class="c-score">' . "\n";
