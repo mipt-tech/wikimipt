@@ -144,31 +144,35 @@ RUN tar -xvf extensions/SemanticInternalObjects.tar.gz --directory extensions
 COPY extensions/CharInsert-REL1_35-89fa92f.tar.gz extensions/CharInsert.tar.gz
 RUN  tar -xvf extensions/CharInsert.tar.gz --directory extensions
 
-# Installing RatePage extension
+# Installing RatePage extension (with custom patches)
 # https://www.mediawiki.org/wiki/Extension:RatePage
 # https://gitlab.com/nonsensopedia/extensions/ratepage/-/archive/REL1_35/ratepage-REL1_35.tar.gz
-COPY extensions/ratepage-REL1_35.tar.gz extensions/RatePage.tar.gz
-RUN tar -xvf extensions/RatePage.tar.gz --directory extensions && \
-    mv extensions/ratepage-REL1_35 extensions/RatePage
+COPY extensions/RatePage extensions/RatePage
 
-# Installing OAuth2 Client extension (https://www.mediawiki.org/wiki/Extension:OAuth2_Client )
+# Installing OAuth2 Client extension
+# https://www.mediawiki.org/wiki/Extension:OAuth2_Client
 # RUN cd extensions && git clone https://github.com/Schine/MW-OAuth2Client.git && cd MW-OAuth2Client && git submodule update --init && cd vendors/oauth2-client && composer install
 COPY extensions/MW-OAuth2Client extensions/MW-OAuth2Client
 RUN cd extensions/MW-OAuth2Client/vendors/oauth2-client && composer install
 
-# Installing Comments extension
-# COPY extensions/Comments-master.tar.gz extensions/Comments.tar.gz
-# RUN tar -xvf extensions/Comments.tar.gz --directory extensions && \
-	# mv extensions/mediawiki-extensions-Comments-master extensions/Comments
+# Installing Comments extension (with custom patches)
+# https://www.mediawiki.org/wiki/Extension:Comments
 COPY extensions/Comments extensions/Comments
 
 # Installing MobileFrontend extension
+# https://www.mediawiki.org/wiki/Extension:MobileFrontend
 COPY extensions/MobileFrontend-REL1_35-a4f595e.tar.gz extensions/MobileFrontend.tar.gz
 RUN tar -xvf extensions/MobileFrontend.tar.gz --directory extensions
 
 # Installing Youtube extension
+# https://www.mediawiki.org/wiki/Extension:Youtube
 COPY extensions/YouTube-REL1_35-9133825.tar.gz extensions/YouTube.tar.gz
 RUN tar -xvf extensions/YouTube.tar.gz --directory extensions
+
+# Installing WikiSEO extension
+# https://www.mediawiki.org/wiki/Extension:WikiSEO
+COPY extensions/WikiSEO-REL1_35-74a863f.tar.gz extensions/WikiSEO.tar.gz
+RUN tar -xvf extensions/WikiSEO.tar.gz --directory extensions
 
 # Installing Citizen skin
 COPY skins/citizen.zip skins/citizen.zip

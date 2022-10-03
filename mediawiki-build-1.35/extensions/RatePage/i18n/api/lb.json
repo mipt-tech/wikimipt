@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Robby"
+		]
+	},
+	"apihelp-ratepage-param-pageid": "ID vun der Säit",
+	"apihelp-ratepage-param-pagetitle": "Titel vun der Säit",
+	"apihelp-ratepage-example-1": "Déi aktuell Bewäertung fir d'Säit Beispill kréien,",
+	"apihelp-ratepage-example-2": "Bewäert d'Säit Beispill mat enger 2.",
+	"apierror-ratepage-contest-not-exists": "Concours $1 gëtt et net.",
+	"apierror-ratepage-page-not-exists": "Spezifizéiert Säit gëtt et net.",
+	"apierror-ratepage-cannot-vote-in-contest": "Dir hutt net déi néideg Rechter fir bei dësem Concours ofzestëmmen."
+}
