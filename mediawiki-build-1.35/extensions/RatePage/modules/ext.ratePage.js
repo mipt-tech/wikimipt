@@ -273,8 +273,9 @@ mw.RatePage = function () {
 			}
 			starsInner += 'data-ratingstar-no="' + i.toString() + '"></div>'
 		}
+		starsInner += '<div class="ratingsinfo-avg"></div>';
 		stars.append( starsInner );
-		stars.append( '<div class="ratingsinfo-embed"><div class="ratingsinfo-yourvote"></div><div class="ratingsinfo-avg"></div></div>' );
+		stars.append( '<div class="ratingsinfo-embed"><div class="ratingsinfo-yourvote"></div></div>' );
 
 		self.addToStarMap( contest, pageId, stars, starMap );
 	};
@@ -350,7 +351,7 @@ mw.RatePage = function () {
 
 					stars.append( star );
 				}
-				stars.after( '<div class="ratingsinfo-desktop"><div class="ratingsinfo-yourvote"></div><div class="ratingsinfo-avg"></div></div>' );
+				stars.after( '<div class="ratingsinfo-avg"></div><div class="ratingsinfo-desktop"><div class="ratingsinfo-yourvote"></div></div>' );
 			}
 
 			if ( stars ) {

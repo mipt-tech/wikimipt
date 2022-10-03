@@ -179,12 +179,13 @@ class Hooks {
 
 		// Check if the specified width is in pixels, discard anything else
 		// Accept only simple integers, just to be sure
-		$width = trim( str_replace( 'px', '', $width ) );
-		if ( !preg_match( '/^\d+$/', $width ) ) {
-			$width = 300;
-		} else {
-			$width = intval( $width );
-		}
+		// $width = trim( str_replace( 'px', '', $width ) );
+		// if ( !preg_match( '/^\d+$/', $width ) ) {
+		// 	$width = 300;
+		// } else {
+		// 	$width = intval( $width );
+		// }
+		$width = 150;
 
 		return Html::element(
 			'div',
