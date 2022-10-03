@@ -195,6 +195,7 @@ wfLoadExtension( 'YouTube' );
 enableSemantics( '{{ mediawiki_server_domain }}' );
 require_once "$IP/extensions/SemanticInternalObjects/SemanticInternalObjects.php";
 
+$smwgPageSpecialProperties = [ '_MDAT', '_CDAT' ];
 
 $wgRPShowResultsBeforeVoting = true;
 $wgRPImmediateSMWUpdate = true;
