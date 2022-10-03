@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mainframe98"
+		]
+	},
+	"ratePage-vote-error": "Er is iets misgegaan en uw stem kon niet worden opgeslagen.",
+	"ratePage-vote-info": "Uw stem: $1.",
+	"ratePage-vote-average-info": "Gemiddelde: $1 ($2).",
+	"ratePage-caption-1": "Verschrikkelijk",
+	"ratePage-caption-2": "Redelijk",
+	"ratePage-caption-3": "OK",
+	"ratePage-caption-4": "Goed",
+	"ratePage-caption-5": "Uitmuntend!",
+	"ratePage-contest-disabled": "uitgeschakeld",
+	"ratePage-contest-enabled": "'''ingeschakeld'''",
+	"ratePage-contests-list-enabled": "Status",
+	"ratePage-contests-list-description": "Beschrijving",
+	"ratePage-edit-description": "Beschrijving",
+	"ratePage-edit-enabled": "Ingeschakeld",
+	"ratePage-edit-save": "Opslaan",
+	"ratePage-results-list-page": "Pagina",
+	"ratePage-results-list-count": "Aantal stemmen",
+	"group-*": "(iedereen)",
+	"ratePage-edit-export": "Resultaten exporteren"
+}

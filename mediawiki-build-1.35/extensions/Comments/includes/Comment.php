@@ -969,7 +969,7 @@ class Comment extends ContextSource {
 
 		$output .= '</div>' . "\n"; 
 		$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
-		if ((intval($this->currentScore) < -10 || $this->hidden ) && $this->getUser()->isAnon()) {
+		if ((intval($this->currentScore) < -2 || $this->hidden ) && $this->getUser()->isAnon()) {
 			if ( $this->page->title ) {
 				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect&returnto=' . $this->page->title->getPrefixedUrl() . "%23comment-{$this->id}";
 			} else {
