@@ -26,7 +26,7 @@
 
 - name: Pull mediawiki docker image
   community.docker.docker_image:
-    name: registry.gitlab.com/fpmi/wikimipt/mediawiki
+    name: registry.gitlab.com/mipt.tech/wikimipt/mediawiki
     source: pull
     tag: latest
   become: true

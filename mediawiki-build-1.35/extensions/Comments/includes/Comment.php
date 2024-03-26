@@ -1052,7 +1052,7 @@ class Comment extends ContextSource {
 			} else {
 				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect';
 			}
-			$output .= '<i><a href="index.php?title=НЛО" target="_blank" rel="noopener noreferer">НЛО</a> прилетело и оставило это здесь.</i>'; // <br>Чтобы посмотреть, <a href="' . $auth_link . '">станьте инопланетянином</a>
+			$output .= '<i><a href="/index.php?title=НЛО" target="_blank" rel="noopener noreferer">НЛО</a> прилетело и оставило это здесь.</i>'; // <br>Чтобы посмотреть, <a href="' . $auth_link . '">станьте инопланетянином</a>
 		} else {
 			$output .= $this->getText();
 		}

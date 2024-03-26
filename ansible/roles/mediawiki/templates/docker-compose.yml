@@ -3,7 +3,7 @@ services:
   mediawiki:
     container_name: wikimipt_mediawiki
     hostname: wikimipt_mediawiki
-    image: registry.gitlab.com/fpmi/wikimipt/mediawiki:latest
+    image: registry.gitlab.com/mipt.tech/wikimipt/mediawiki:latest
     restart: always
     ports:
       - 8100:80

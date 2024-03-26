@@ -4,7 +4,7 @@
   tasks:
     - name: Build mediawiki image
       community.docker.docker_image:
-        name: registry.gitlab.com/fpmi/wikimipt/mediawiki
+        name: registry.gitlab.com/mipt.tech/wikimipt/mediawiki
         tag: latest
         build:
           path: "{{ project_dir }}/mediawiki-build-1.35"
