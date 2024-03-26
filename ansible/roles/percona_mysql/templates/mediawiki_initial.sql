@@ -39,6 +39,8 @@ CREATE TABLE `Comments` (
   `Comment_Date` datetime NOT NULL DEFAULT '1970-01-01 00:00:01',
   `Comment_Parent_ID` int(11) NOT NULL DEFAULT '0',
   `Comment_IP` varbinary(45) NOT NULL DEFAULT '',
+  `Comment_hidden` int(4) NOT NULL DEFAULT '0',
+  `Comment_deleted` int(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`CommentID`),
   KEY `comment_page_id_index` (`Comment_Page_ID`),
   KEY `wiki_actor` (`Comment_actor`)

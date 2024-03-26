@@ -17,7 +17,7 @@
 - Python3 и пакетный менеджер pip
 - Зависимости python3 (`pip3 install setuptools wheel`)
 - Ansible (настоятельно рекомендуется устанавливать через `pip3 install ansible`)
-
+- Питонячие библиотеки для работы с docker и docker-compose (`sudo pip3 install docker==6.1.3 docker-compose`)
 
 ### Основные команды
 
@@ -45,11 +45,11 @@
     cd ansible
     ansible-playbook update_db.yml -K
     ```
+- Установить имя пользователя и пароль администратора (https://www.mediawiki.org/wiki/Manual:CreateAndPromote.php)
 
-- Провести миграции Mediawiki (это нужно при первом запуске и при каждой пересборке образа)
+    Логин будет: `adminuser` пароль: `adminpassword`
     ```bash
-    cd ansible
-    ansible-playbook update_db.yml -K
+    docker exec -ti wikimipt_mediawiki php maintenance/createAndPromote.php adminuser adminpassword --bureaucrat --sysop --interface-admin --force 
     ```
 
 - Перезапустить сервис
