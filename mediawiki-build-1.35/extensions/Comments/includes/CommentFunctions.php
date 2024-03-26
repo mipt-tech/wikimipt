@@ -120,6 +120,14 @@ class CommentFunctions {
 			}
 		}
 
+		$comment_alphabetic_chars = preg_match_all('/[A-Za-zА-Яа-я]/', $text, $letters);
+		$comment_alphabetic_chars_num = count($letters[0]);
+		$comment_total_chars = strlen($text);
+		if ($comment_alphabetic_chars_num / $comment_total_chars < 0.6) {
+			// Слишком много спец-символов - ascii-арты (?)
+			return true;
+		}
+
 		return $retVal;
 	}
 

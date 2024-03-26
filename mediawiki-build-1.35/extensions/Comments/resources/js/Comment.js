@@ -85,6 +85,27 @@
 		},
 
 		/**
+		 * This function is called whenever a user clicks on the "Hide Comment" or "Unhide Comment"
+		 * link to hide/unhide a comment for unauthorized users.
+		 *
+		 * @param {number} commentID Comment ID number
+		 * @param {boolean} hide Whether enable or disable hidden state for comment
+		 */
+		hideComment: function ( commentID, hide ) {
+			if ( !hide || window.confirm( mw.msg( 'comments-hide-warning' ) ) ) {
+				( new mw.Api() ).postWithToken( 'csrf', {
+					action: 'commenthide',
+					commentID: commentID,
+					hide: hide,
+				} ).done( function ( response ) {
+					if ( response.commenthide.ok ) {
+						window.alert(hide ? "Комментарий принудительно скрыт для неавторизованных пользователей" : "Принудительное скрытие комментария снято");
+					}
+				} );
+			}
+		},
+
+		/**
 		 * Vote for a comment.
 		 *
 		 * @param {number} commentID Comment ID number
@@ -398,6 +419,16 @@
 			// "Delete Comment" links
 			.on( 'click', 'a.comment-delete-link', function () {
 				Comment.deleteComment( $( this ).data( 'comment-id' ) );
+			} )
+
+			// "Hide Comment" links
+			.on( 'click', 'a.comment-hide-link', function () {
+				Comment.hideComment( $( this ).data( 'comment-id' ), true );
+			} )
+
+			// "Unhide Comment" links
+			.on( 'click', 'a.comment-unhide-link', function () {
+				Comment.hideComment( $( this ).data( 'comment-id' ), false );
 			} )
 
 			// "Show this hidden comment" -- comments made by people on the user's

@@ -168,9 +168,9 @@ class Comment extends ContextSource {
 
 		// @TODO: this does not look OK to additionally query the vote data here
 		//			it's probably better to do it within the Comment::newFromID down below
-		if ( isset( $data['current_vote'] ) ) {
-			$vote = $data['current_vote'];
-		} else {
+		// if ( isset( $data['current_vote'] ) ) {
+		// 	$vote = $data['current_vote'];
+		// } else {
 			$dbr = wfGetDB( DB_REPLICA );
 			$row = $dbr->selectRow(
 				'Comments_Vote',
@@ -186,13 +186,14 @@ class Comment extends ContextSource {
 			} else {
 				$vote = false;
 			}
-		}
+		// }
 
 		$this->currentVote = $vote;
 
 		// @TODO: same as above for current_vote
-		$this->currentScore = isset( $data['total_vote'] )
-			? $data['total_vote'] : $this->getScore();
+		// $this->currentScore = isset( $data['total_vote'] )
+			// ? $data['total_vote'] : $this->getScore();
+		$this->currentScore = $this->getScore();
 	}
 
 	/**
@@ -611,6 +612,9 @@ class Comment extends ContextSource {
 		if ( $row !== false && $row->CommentScore ) {
 			$score = $row->CommentScore;
 		}
+		if (!CommentObsceneCensorRus::isAllowed($this->text)) {
+			$score = intval($score) - 5;
+		}
 		return $score;
 	}
 
@@ -696,6 +700,52 @@ class Comment extends ContextSource {
 
 		// Ping other extensions that may have hooked into this point (i.e. LinkFilter)
 		Hooks::run( 'Comment::delete', [ $this, $this->id, $this->page->id ] );
+	}
+
+	/**
+	 * Hides comment for unauthorized users regardless of its content / score
+	 */
+	function hide() {
+		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw->startAtomic( __METHOD__ );
+		$dbw->update(
+			'Comments',
+			[
+				'Comment_hidden' => 1,
+			],
+			[ 'CommentID' => $this->id ],
+			__METHOD__
+		);
+		$dbw->endAtomic( __METHOD__ );
+
+		// Log the deletion to Special:Log/comments.
+		self::log( 'hide', $this->getUser(), $this->page->id, $this->id );
+
+		// Clear memcache & Squid cache
+		$this->page->clearCommentListCache();
+	}
+
+	/**
+	 * Unhides comment for unauthorized users (but it can still stay hidden because of its content / score)
+	 */
+	function unhide() {
+		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw->startAtomic( __METHOD__ );
+		$dbw->update(
+			'Comments',
+			[
+				'Comment_hidden' => 0,
+			],
+			[ 'CommentID' => $this->id ],
+			__METHOD__
+		);
+		$dbw->endAtomic( __METHOD__ );
+
+		// Log the deletion to Special:Log/comments.
+		self::log( 'unhide', $this->getUser(), $this->page->id, $this->id );
+
+		// Clear memcache & Squid cache
+		$this->page->clearCommentListCache();
 	}
 
 	/**
@@ -882,16 +932,29 @@ class Comment extends ContextSource {
 		$dlt = '';
 
 		if (
-			$userObj->isAllowed( 'commentadmin' ) ||
+			$userObj->isAllowed( 'commentadmin' )
 			// Allow users to delete their own comments if that feature is enabled in
 			// site configuration
 			// @see https://phabricator.wikimedia.org/T147796
-			$userObj->isAllowed( 'comment-delete-own' ) && $this->isOwner( $userObj )
+			//
+			// upd by @endevir: do not allow :DDD
+			// || $userObj->isAllowed( 'comment-delete-own' ) && $this->isOwner( $userObj )
 		) {
 			$dlt = ' | <span class="c-delete">' .
 				'<a href="javascript:void(0);" rel="nofollow" class="comment-delete-link" data-comment-id="' .
 				$this->id . '">' .
-				$this->msg( 'comments-delete-link' )->plain() . '</a></span>';
+				$this->msg( 'comments-delete-link' )->plain() . 
+				'</a>';
+ 
+			if ($this->hidden) {
+				$dlt = $dlt . ' | <a href="javascript:void(0);" rel="nofollow" class="comment-unhide-link" data-comment-id="' .
+				$this->id . '">Снять принудительное скрытие</a>';
+			} else {
+				$dlt = $dlt . ' | <a href="javascript:void(0);" rel="nofollow" class="comment-hide-link" data-comment-id="' .
+				$this->id . '">Скрыть принудительно</a>';
+			}
+
+			$dlt = $dlt . '</span>';
 		}
 
 		// Reply Link (does not appear on child comments)
@@ -939,7 +1002,13 @@ class Comment extends ContextSource {
 		}
 
 		// Default avatar image, if SocialProfile extension isn't enabled
-		$avatarImg = '<img style="width: 52px; border: none; border-radius: 50%;" src="https://avatars.dicebear.com/api/croodles/' . $this->ip . '.png" alt="" border="0" />';
+		if (
+			$this->user->isRegistered()
+		) {
+			$avatarImg = '<img style="width: 52px; border: none; border-radius: 50%;" src="https://api.dicebear.com/8.x/croodles/svg?seed=' . $this->user->getId() . '" alt="" border="0" />';
+		} else {
+			$avatarImg = '<img style="width: 52px; border: none; border-radius: 50%;" src="https://api.dicebear.com/8.x/croodles/svg?seed=' . $this->ip . '" alt="" border="0" />';
+		}
 		// If SocialProfile *is* enabled, then use its wAvatar class to get the avatars for each commenter
 		if ( class_exists( 'wAvatar' ) ) {
 			$avatar = new wAvatar( $this->user->getId(), 'ml' );
@@ -954,6 +1023,14 @@ class Comment extends ContextSource {
 		$output .= "<span class=\"c-user-level\">{$commentPosterLevel}</span> {$blockLink}" . "\n";
 
 		AtEase::suppressWarnings(); // E_STRICT bitches about strtotime()
+
+		$should_hide_comment = (
+			intval($this->currentScore) <= -3 ||
+			$this->hidden ||
+			!CommentObsceneCensorRus::isAllowed($this->text) || // для матерных слов
+			CommentFunctions::isSpam($this->text)
+		) && $this->getUser()->isAnon();
+
 		$output .= '<div class="c-time">' .
 			$this->date .
 			'&nbsp;<i>(' .
@@ -969,13 +1046,13 @@ class Comment extends ContextSource {
 
 		$output .= '</div>' . "\n"; 
 		$output .= "<div class=\"c-comment {$comment_class}\">" . "\n";
-		if ((intval($this->currentScore) < -2 || $this->hidden ) && $this->getUser()->isAnon()) {
+		if ($should_hide_comment) {
 			if ( $this->page->title ) {
 				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect&returnto=' . $this->page->title->getPrefixedUrl() . "%23comment-{$this->id}";
 			} else {
 				$auth_link = '/index.php?title=Служебная:OAuth2Client/redirect';
 			}
-			$output .= '<i>Комментарий скрыт. Чтобы увидеть его, <a href="' . $auth_link . '">авторизуйтесь с почтой @phystech.edu</a></i>';
+			$output .= '<i><a href="index.php?title=НЛО" target="_blank" rel="noopener noreferer">НЛО</a> прилетело и оставило это здесь.</i>'; // <br>Чтобы посмотреть, <a href="' . $auth_link . '">станьте инопланетянином</a>
 		} else {
 			$output .= $this->getText();
 		}

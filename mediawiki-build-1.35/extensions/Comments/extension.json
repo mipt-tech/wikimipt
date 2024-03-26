@@ -53,6 +53,7 @@
 	"APIModules": {
 		"commentblock": "CommentBlockAPI",
 		"commentdelete": "CommentDeleteAPI",
+		"commenthide":   "CommentHideAPI",
 		"commentlatestid": "CommentLatestIdAPI",
 		"commentlist": {
 			"class": "CommentListAPI",
@@ -79,6 +80,7 @@
 		"MigrateOldCommentsVoteUserColumnsToActor": "maintenance/migrateOldCommentsVoteUserColumnsToActor.php",
 		"Comment": "includes/Comment.php",
 		"CommentsPage": "includes/CommentsPage.php",
+		"CommentObsceneCensorRus": "includes/CommentObsceneCensorRus.php",
 		"NumberOfComments": "includes/parser/NumberOfComments.php",
 		"DisplayComments": "includes/parser/DisplayComments.php",
 		"CommentFunctions": "includes/CommentFunctions.php",
@@ -87,6 +89,7 @@
 		"CommentsHooks": "includes/CommentsHooks.php",
 		"CommentBlockAPI": "includes/api/CommentBlockAPI.php",
 		"CommentDeleteAPI": "includes/api/CommentDeleteAPI.php",
+		"CommentHideAPI": "includes/api/CommentHideAPI.php",
 		"CommentLatestIdAPI": "includes/api/CommentLatestIdAPI.php",
 		"CommentListAPI": "includes/api/CommentListAPI.php",
 		"CommentSubmitAPI": "includes/api/CommentSubmitAPI.php",
@@ -121,6 +124,7 @@
 				"comments-block-warning-anon",
 				"comments-block-warning-user",
 				"comments-delete-warning",
+				"comments-hide-warning",
 				"comments-continue-editing-btn",
 				"apierror-nosuchpageid",
 				"comments-is-spam",

@@ -49,7 +49,13 @@
 
     Логин будет: `adminuser` пароль: `adminpassword`
     ```bash
-    docker exec -ti wikimipt_mediawiki php maintenance/createAndPromote.php adminuser adminpassword --bureaucrat --sysop --interface-admin --force 
+    docker exec -ti wikimipt_mediawiki php maintenance/createAndPromote.php adminuser adminpassword --bureaucrat --sysop --interface-admin --custom-groups commentadmin, --force 
+    ```    
+
+- Создать обычного (непривелигерованного) пользователя (https://www.mediawiki.org/wiki/Manual:CreateAndPromote.php)
+    Логин будет: `adminuser` пароль: `adminpassword`
+    ```bash
+    docker exec -ti wikimipt_mediawiki php maintenance/createAndPromote.php simpleuser simplepassword --force 
     ```
 
 - Перезапустить сервис
