@@ -54,6 +54,7 @@
 	"comments-not-allowed": "You are not allowed to post comments.",
 	"comments-post": "Post comment",
 	"comments-submit": "Add your comment",
+	"comments-warning": "<p><b>ОСТОРОЖНО:</b> после сохранения комментарии нельзя удалять или редактировать. Всё, что ты пишешь - останется в интернете навсегда.</p><p>Оставь будущим поколениям читателей викимипта конструктив и взвешенное мнение, они это оценят. Для эмоций же идеально подойдёт <a href=\"https://vk.com/phystech.confessions\" target=\"_blank\" rel=\"noopener noreferrer\">написать в конфешнс</a></p>",
 	"comments-score-text": "Score",
 	"comments-permalink": "Permalink",
 	"comments-delete-link": "Delete comment",

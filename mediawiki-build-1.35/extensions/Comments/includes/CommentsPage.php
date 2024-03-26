@@ -535,8 +535,9 @@ class CommentsPage extends ContextSource {
 			}
 
 			$output .= '<textarea name="commentText" id="comment" rows="5" cols="64"></textarea>' . "\n";
+			$output .= '<div class="c-form-message">' . wfMessage( 'comments-warning' )->plain() . '</div>' . "\n";
 			$output .= '<div class="comment-preview"></div>';
-			$output .= '<div class="c-form-button">';
+			$output .= '<div class="c-form-button" style="padding-bottom: 24px;">';
 			$output .= '<input type="button" value="' . wfMessage( 'comments-post' )->escaped() .
 				'" class="site-button" name="wpSubmitComment" />' . "\n";
 			$output .= '<input type="button" value="' . wfMessage( 'showpreview' )->escaped() .
